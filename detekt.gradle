@@ -1,0 +1,20 @@
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+dependencies {
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.9.1"
+}
+
+detekt {
+    config = files("$rootDir/config/detekt/detekt.yml")
+    toolVersion = "1.9.1"
+    input = files("app/src/main/java")
+//    baseline = file("my-detekt-baseline.xml") // Just if you want to create a baseline file.
+    reports {
+        xml {
+            enabled = false
+        }
+        html {
+            enabled = true
+        }
+    }
+}
