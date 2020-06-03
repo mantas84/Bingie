@@ -8,6 +8,9 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
+        # Set Fabric Api Key with environment variables
+      - run: echo "TRAKT_CLIENT_ID=$TRAKT_CLIENT_ID" >> ~/apikey.properties
+      - run: echo "TRAKT_CLIENT_SECRET=$TRAKT_CLIENT_SECRET" >> ~/apikey.properties
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       #      - run:
