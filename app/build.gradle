@@ -36,12 +36,13 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            buildConfigField("String", "TRAKT_CLIENT_ID", apikeyProperties['TRAKT_CLIENT_ID'])
+            buildConfigField("String", "BUILD_TIME", "\"0\"")
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug{
             buildConfigField("String", "TRAKT_CLIENT_ID", apikeyProperties['TRAKT_CLIENT_ID'])
             buildConfigField("String", "BUILD_TIME", "\"0\"")
-            buildConfigField "String", "SERVER_URL", "\"http://dev.myserver.com\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
