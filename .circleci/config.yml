@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  slack: circleci/slack@3.4.2
 jobs:
   build:
     working_directory: ~/code
@@ -34,3 +36,8 @@ jobs:
       - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: app/build/test-results
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+      - slack/status:
+            fail_only: true
+#            mentions: 'USERID1,USERID2'
+#            only_for_branches: only_for_branches
+            webhook: SLACK_WEBHOOK
