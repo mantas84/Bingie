@@ -40,4 +40,4 @@ jobs:
             fail_only: true
 #            mentions: 'USERID1,USERID2'
 #            only_for_branches: only_for_branches
-            webhook: SLACK_WEBHOOK
+            webhook: https://hooks.slack.com/services/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
