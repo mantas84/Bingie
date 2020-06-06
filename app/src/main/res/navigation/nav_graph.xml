@@ -9,9 +9,15 @@
         android:name="eu.oncreate.bingie.fragment.list.ListFragment"
         android:label="fragment_list"
         tools:layout="@layout/fragment_list">
-<!--        <action-->
-<!--            android:id="@+id/action_discoverFragment_to_podcastFragment"-->
-<!--            app:destination="@id/podcastFragment" />-->
+        <action
+            android:id="@+id/action_list_to_details"
+            app:destination="@id/detailsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="eu.oncreate.bingie.fragment.details.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details"/>
 
 </navigation>

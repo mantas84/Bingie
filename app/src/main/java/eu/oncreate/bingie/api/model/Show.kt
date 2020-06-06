@@ -1,7 +1,10 @@
 package eu.oncreate.bingie.api.model
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Show(
     @Json(name = "aired_episodes")
     val airedEpisodes: Int,
@@ -45,4 +48,4 @@ data class Show(
     val votes: Int,
     @Json(name = "year")
     val year: Int?
-)
+) : Parcelable

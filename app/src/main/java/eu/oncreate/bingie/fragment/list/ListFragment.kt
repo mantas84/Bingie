@@ -4,13 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import eu.oncreate.bingie.R
 import eu.oncreate.bingie.fragment.base.BaseFragment
+import eu.oncreate.bingie.fragment.details.InitialDetailsState
 import kotlinx.android.synthetic.main.fragment_list.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,7 +30,11 @@ class ListFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         // todo Add to baseFragment??
         controller = ListController(requireContext()) { searchResultItem ->
-            Toast.makeText(requireContext(), "clicked ${searchResultItem.show.title}", Toast.LENGTH_SHORT).show()
+            navigator
+                .navigate(
+                    R.id.action_list_to_details,
+                    bundleOf(MvRx.KEY_ARG to InitialDetailsState(searchResultItem))
+                )
         }
         searchList.layoutManager = LinearLayoutManager(requireContext())
         searchList.setController(controller)
