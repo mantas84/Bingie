@@ -51,4 +51,4 @@ workflows:
             branches:
               only:
                 - master
-                - beta
+                - dev
