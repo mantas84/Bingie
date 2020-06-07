@@ -10,11 +10,15 @@
         android:id="@+id/searchQuery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:singleLine="true"
         android:importantForAutofill="no" />
 
     <com.airbnb.epoxy.EpoxyRecyclerView
-        android:layout_width="match_parent"
         android:id="@+id/searchList"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
 </LinearLayout>

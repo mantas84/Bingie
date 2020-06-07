@@ -19,7 +19,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -42,31 +41,15 @@ class ListViewModel @AssistedInject constructor(
     }
 
     init {
-        observeChanges()
         checkTmdbConfig()
+        observeChanges()
     }
 
-    private fun observeChanges() {
+    private fun observeChanges() = withState { state ->
         querySubject
             .distinctUntilChanged()
             .debounce(400, TimeUnit.MILLISECONDS)
-            .subscribe { fetchData(it) }
-            .addTo(disposable)
-    }
-
-    private fun fetchData(query: String) = withState { state ->
-        traktApi.search(query)
-            .subscribeOn(Schedulers.io())
-            .flatMap {
-                val config = state.tmdbConfig.invoke()!!
-
-                val pairs = Observable
-                    .fromIterable(it)
-                    .flatMapSingle { item -> getImages(item, config) }
-                    .toList()
-                    .map { it.toList() }
-                pairs
-            }
+            .switchMapSingle { traktSearch(it, state) }
             .doOnError { Timber.d("Error here $it") }
             .execute {
                 when (it) {
@@ -76,9 +59,24 @@ class ListViewModel @AssistedInject constructor(
             }
     }
 
+    private fun traktSearch(query: String, state: State): Single<List<ShowWithImages>> {
+        return traktApi.search(query)
+            .subscribeOn(Schedulers.io())
+            .flatMap {
+                val config = state.tmdbConfig.invoke()
+
+                val pairs = Observable
+                    .fromIterable(it)
+                    .flatMapSingle { item -> getImages(item, config) }
+                    .toList()
+                    .map { it.toList() }
+                pairs
+            }
+    }
+
     private fun getImages(
         item: SearchResultItem,
-        configuration: Configuration
+        configuration: Configuration?
     ): Single<ShowWithImages> {
 
         val tmdbFallback = TmdbImages(backdrops = emptyList(), id = -1, posters = emptyList())
@@ -107,7 +105,8 @@ class ListViewModel @AssistedInject constructor(
 
         val fanart = when (val id = item.show.ids.tvdb) {
             null -> Single.just(fanartFallback)
-            else -> fanartApi.getImages(id, BuildConfig.FANART_KEY).onErrorReturnItem(fanartFallback)
+            else -> fanartApi.getImages(id, BuildConfig.FANART_KEY)
+                .onErrorReturnItem(fanartFallback)
         }
 
         return Single.zip(
@@ -117,7 +116,7 @@ class ListViewModel @AssistedInject constructor(
                 ShowWithImages(
                     item,
                     tmdbImage.takeUnless { it.id == -1 },
-                    configuration.images,
+                    configuration?.images,
                     fanartImage.takeUnless { it.thetvdbId == null }
                 )
             })

@@ -37,7 +37,7 @@ data class ShowWithImages(
         val tvposter = fanartImages?.tvposter?.firstOrNull()?.url
         val tvthumb = fanartImages?.tvthumb?.firstOrNull()?.url
 
-        val image16x9 = clearart ?: hdclearart ?: tvthumb ?: seasonthumb
+        val image16x9 = tvthumb ?: seasonthumb ?: clearart ?: hdclearart
 
         val other = hdtvlogo ?: clearlogo ?: tvposter ?: seasonposter ?: showbackground ?: tvbanner
         ?: seasonbanner

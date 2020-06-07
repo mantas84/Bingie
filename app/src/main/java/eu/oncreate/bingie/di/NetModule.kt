@@ -114,7 +114,11 @@ class NetModule {
     @Singleton
     @Named(Trakt)
     fun provideRetrofitTrakt(moshi: Moshi, @Named(Trakt) okHttpClient: OkHttpClient): Retrofit {
-        val baseUrl = "https://api-staging.trakt.tv"
+        val baseUrl = if (BuildConfig.DEBUG) {
+            "https://api-staging.trakt.tv"
+        } else {
+            "https://api.trakt.tv"
+        }
         return Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl(baseUrl)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

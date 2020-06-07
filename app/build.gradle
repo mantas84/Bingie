@@ -7,11 +7,23 @@ def apikeyPropertiesFile = rootProject.file('apikey.properties')
 def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
+def storePropertiesFile = rootProject.file('keystore.properties')
+def storeProperties = new Properties()
+storeProperties.load(new FileInputStream(storePropertiesFile))
+
 kapt {
     correctErrorTypes = true
 }
 
 android {
+    signingConfigs {
+        release {
+            keyAlias storeProperties['keyAlias']
+            keyPassword storeProperties['keyPassword']
+            storeFile file(storeProperties['storeFile'])
+            storePassword storeProperties['storePassword']
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -41,13 +53,16 @@ android {
             buildConfigField("String", "TVDB_KEY", apikeyProperties['TVDB_KEY'])
             buildConfigField("String", "FANART_KEY", apikeyProperties['FANART_KEY'])
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
-        debug{
+        debug {
             buildConfigField("String", "TRAKT_CLIENT_ID", apikeyProperties['TRAKT_CLIENT_ID_DEV'])
             buildConfigField("String", "TMDB_TOKEN", apikeyProperties['TMDB_TOKEN'])
             buildConfigField("String", "TVDB_KEY", apikeyProperties['TVDB_KEY'])
             buildConfigField("String", "FANART_KEY", apikeyProperties['FANART_KEY'])
             minifyEnabled false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix "-debug"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

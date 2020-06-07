@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView.OnEditorActionListener
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +15,11 @@ import com.airbnb.mvrx.withState
 import eu.oncreate.bingie.R
 import eu.oncreate.bingie.fragment.base.BaseFragment
 import eu.oncreate.bingie.fragment.details.InitialDetailsState
+import eu.oncreate.bingie.utils.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_list.*
 import timber.log.Timber
 import javax.inject.Inject
+
 
 class ListFragment : BaseFragment() {
 
@@ -54,6 +58,13 @@ class ListFragment : BaseFragment() {
         searchQuery.doOnTextChanged { text, start, count, after ->
             viewModel.queryChanged(text?.toString().orEmpty())
         }
+        searchQuery.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                v.hideKeyboard()
+                return@OnEditorActionListener true
+            }
+            false
+        })
     }
 
     override fun invalidate() = withState(viewModel) { state ->
