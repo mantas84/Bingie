@@ -11,7 +11,10 @@ import retrofit2.http.Query
 interface TraktApi {
 
     @GET("/search/show?extended=full&fields=title")
-    fun search(@Query("query") query: String): Single<List<SearchResultItem>>
+    fun search(
+        @Query("query") query: String,
+        @Query("limit") limit: String = "25"
+    ): Single<List<SearchResultItem>>
 
     @GET("/shows/{showId}/seasons?extended=full")
     fun showSeasons(@Path("showId") showId: String): Single<List<SeasonsItem>>

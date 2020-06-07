@@ -7,6 +7,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import eu.oncreate.bingie.BuildConfig
+import eu.oncreate.bingie.api.FanartApi
+import eu.oncreate.bingie.api.TmdbApi
 import eu.oncreate.bingie.api.TraktApi
 import okhttp3.Cache
 import okhttp3.Interceptor
@@ -18,6 +20,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.Date
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -41,6 +44,7 @@ class NetModule {
 
     @Provides
     @Singleton
+    @Named(Trakt)
     fun provideOkhttpClient(cache: Cache): OkHttpClient {
 
         val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -52,6 +56,23 @@ class NetModule {
             connectTimeout(20, TimeUnit.SECONDS)
             readTimeout(20, TimeUnit.SECONDS)
             addInterceptor(SupportInterceptor())
+            cache(cache)
+        }.build()
+    }
+
+    @Provides
+    @Singleton
+    @Named(Tmdb)
+    fun provideOkhttpClientTmdb(cache: Cache): OkHttpClient {
+
+        val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            this.level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        return OkHttpClient.Builder().apply {
+            addInterceptor(interceptor)
+            connectTimeout(20, TimeUnit.SECONDS)
+            readTimeout(20, TimeUnit.SECONDS)
             cache(cache)
         }.build()
     }
@@ -91,7 +112,8 @@ class NetModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit {
+    @Named(Trakt)
+    fun provideRetrofitTrakt(moshi: Moshi, @Named(Trakt) okHttpClient: OkHttpClient): Retrofit {
         val baseUrl = "https://api-staging.trakt.tv"
         return Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl(baseUrl)
@@ -102,7 +124,49 @@ class NetModule {
 
     @Provides
     @Singleton
-    fun provideTraktApi(retrofit: Retrofit): TraktApi {
+    @Named(Tmdb)
+    fun provideRetrofitTmdb(moshi: Moshi, @Named(Tmdb) okHttpClient: OkHttpClient): Retrofit {
+        val baseUrl = "https://api.themoviedb.org/3/"
+        return Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi))
+            .baseUrl(baseUrl)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(okHttpClient)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named(Fanart)
+    fun provideRetrofitFanart(moshi: Moshi, @Named(Tmdb) okHttpClient: OkHttpClient): Retrofit {
+        val baseUrl = "https://webservice.fanart.tv/v3/"
+        return Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi))
+            .baseUrl(baseUrl)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(okHttpClient)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTraktApi(@Named(Trakt) retrofit: Retrofit): TraktApi {
         return retrofit.create(TraktApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTmdbApi(@Named(Tmdb) retrofit: Retrofit): TmdbApi {
+        return retrofit.create(TmdbApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFanartApi(@Named(Fanart) retrofit: Retrofit): FanartApi {
+        return retrofit.create(FanartApi::class.java)
+    }
+
+    companion object {
+        const val Trakt = "Trakt"
+        const val Tmdb = "Tmdb"
+        const val Fanart = "Fanart"
     }
 }

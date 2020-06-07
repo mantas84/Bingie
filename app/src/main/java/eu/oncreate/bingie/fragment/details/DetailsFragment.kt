@@ -8,6 +8,8 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import eu.oncreate.bingie.R
 import eu.oncreate.bingie.fragment.base.BaseFragment
+import eu.oncreate.bingie.utils.GlideUtils.loadCenterCrop
+import kotlinx.android.synthetic.main.fragment_details.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,6 +29,12 @@ class DetailsFragment : BaseFragment() {
     }
 
     override fun invalidate() = withState(viewModel) { state ->
+
+        state.item.apply {
+            detailsHeader.loadCenterCrop(getImage())
+            detailsTitle.text = searchResultItem.show.title
+            detailsDescription.text = searchResultItem.show.overview
+        }
 
         Timber.d("state $state")
     }
