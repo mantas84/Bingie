@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
@@ -19,7 +20,6 @@ import eu.oncreate.bingie.utils.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_list.*
 import timber.log.Timber
 import javax.inject.Inject
-
 
 class ListFragment : BaseFragment() {
 
@@ -33,15 +33,28 @@ class ListFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // todo Add to baseFragment??
-        controller = ListController(requireContext()) { searchResultItem ->
+        controller = ListController(requireContext()) { searchResultItem, view ->
+            val extras = FragmentNavigatorExtras(
+                view to searchResultItem.searchResultItem.show.ids.trakt.toString()
+            )
             navigator
                 .navigate(
                     R.id.action_list_to_details,
-                    bundleOf(MvRx.KEY_ARG to InitialDetailsState(searchResultItem))
+                    bundleOf(MvRx.KEY_ARG to InitialDetailsState(searchResultItem)),
+                    null,
+                    extras
                 )
         }
         searchList.layoutManager = LinearLayoutManager(requireContext())
         searchList.setController(controller)
+        // 1
+        postponeEnterTransition()
+// 2
+        searchList.viewTreeObserver.addOnPreDrawListener {
+            // 3
+            startPostponedEnterTransition()
+            true
+        }
         invalidate()
     }
 

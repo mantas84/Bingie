@@ -41,7 +41,110 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailsHeader" />
 
-            <View
+            <ImageView
+                android:id="@+id/detailsRatingImg"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_rating"
+                app:layout_constraintEnd_toStartOf="@+id/detailsEpisodesImg"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/detailsInfoBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/detailsRating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintEnd_toEndOf="@+id/detailsRatingImg"
+                app:layout_constraintStart_toStartOf="@+id/detailsRatingImg"
+                app:layout_constraintTop_toBottomOf="@+id/detailsRatingImg"
+                tools:text="LOOOOOOOOOOOOOOOOOOOOOOOOONG" />
+
+            <ImageView
+                android:id="@+id/detailsEpisodesImg"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_baseline_tv_24"
+                app:layout_constraintEnd_toStartOf="@+id/detailsRuntimeImg"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/detailsRatingImg"
+                app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/detailsEpisodes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@+id/detailsEpisodesImg"
+                app:layout_constraintStart_toStartOf="@+id/detailsEpisodesImg"
+                app:layout_constraintTop_toBottomOf="@+id/detailsEpisodesImg"
+                tools:text="LOOOOOOOOOOOOOOOOOOOOOOOOONG" />
+
+            <ImageView
+                android:id="@+id/detailsRuntimeImg"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_baseline_timer_24"
+                app:layout_constraintEnd_toStartOf="@+id/detailsStatusImg"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/detailsEpisodesImg"
+                app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/detailsRuntime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@+id/detailsRuntimeImg"
+                app:layout_constraintStart_toStartOf="@+id/detailsRuntimeImg"
+                app:layout_constraintTop_toBottomOf="@+id/detailsRuntimeImg"
+                tools:text="LOOOOOOOOOOOOOOOOOOOOOOOOONG" />
+
+            <ImageView
+                android:id="@+id/detailsStatusImg"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_status_line"
+                app:layout_constraintEnd_toEndOf="@+id/detailsInfoBar"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/detailsRuntimeImg"
+                app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/detailsStatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintEnd_toEndOf="@+id/detailsStatusImg"
+                app:layout_constraintStart_toStartOf="@+id/detailsStatusImg"
+                app:layout_constraintTop_toBottomOf="@+id/detailsStatusImg"
+                tools:text="LOOOOOOOOOOOOOOOOOOOOOOOOONG" />
+
+            <com.google.android.material.slider.Slider
                 android:id="@+id/detailsSlidingBar"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -64,6 +167,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailsSlidingBar"
+                app:layout_constraintVertical_bias="0.0"
                 tools:text="@tools:sample/lorem/random" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

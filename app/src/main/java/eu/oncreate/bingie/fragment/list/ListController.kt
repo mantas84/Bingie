@@ -1,9 +1,10 @@
 package eu.oncreate.bingie.fragment.list
 
 import android.content.Context
+import android.view.View
 import com.airbnb.epoxy.TypedEpoxyController
 
-class ListController(private val context: Context, private val listener: (ShowWithImages) -> Unit) :
+class ListController(private val context: Context, private val listener: (ShowWithImages, view: View) -> Unit) :
     TypedEpoxyController<List<ShowWithImages>>() {
 
     override fun buildModels(data: List<ShowWithImages>) {

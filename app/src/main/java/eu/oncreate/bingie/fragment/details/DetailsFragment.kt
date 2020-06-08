@@ -1,6 +1,7 @@
 package eu.oncreate.bingie.fragment.details
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,13 @@ class DetailsFragment : BaseFragment() {
 
     private val viewModel: DetailsViewModel by fragmentViewModel()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        postponeEnterTransition()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,9 +39,16 @@ class DetailsFragment : BaseFragment() {
     override fun invalidate() = withState(viewModel) { state ->
 
         state.item.apply {
-            detailsHeader.loadCenterCrop(getImage())
-            detailsTitle.text = searchResultItem.show.title
-            detailsDescription.text = searchResultItem.show.overview
+            val show = searchResultItem.show
+            detailsHeader.loadCenterCrop(getImage(), { startPostponedEnterTransition() })
+            detailsTitle.text = show.title
+            detailsDescription.text = show.overview
+
+            detailsHeader.transitionName = show.ids.trakt.toString()
+            detailsRating.text = show.rating.times(10f).toFloat().toString()
+            detailsRuntime.text = show.runtime.toString()
+            detailsStatus.text = show.status
+            detailsEpisodes.text = show.airedEpisodes.toString()
         }
 
         Timber.d("state $state")

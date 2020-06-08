@@ -17,7 +17,7 @@ import java.time.Duration
 abstract class ItemSeries : EpoxyModelWithHolder<ItemSeries.Holder>() {
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
-    lateinit var listener: (ShowWithImages) -> Unit
+    lateinit var listener: (ShowWithImages, View) -> Unit
 
     @EpoxyAttribute
     lateinit var item: ShowWithImages
@@ -26,7 +26,8 @@ abstract class ItemSeries : EpoxyModelWithHolder<ItemSeries.Holder>() {
         holder.apply {
             val show = item.searchResultItem.show
 
-            itemHolder.setOnClickListener { listener(item) }
+            poster.transitionName = show.ids.trakt.toString()
+            itemHolder.setOnClickListener { listener(item, poster) }
 
             title.text = show.title.orEmpty()
             poster.loadCenterCrop(item.getImage())
