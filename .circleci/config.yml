@@ -10,14 +10,19 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-        # Set TraktTv Api Key with environment variables
+        # Set Api Keys with environment variables
       - run: echo "TRAKT_CLIENT_ID=$TRAKT_CLIENT_ID" >> ~/code/apikey.properties
       - run: echo "TRAKT_CLIENT_SECRET=$TRAKT_CLIENT_SECRET" >> ~/code/apikey.properties
       - run: echo "TRAKT_CLIENT_ID_DEV=$TRAKT_CLIENT_ID_DEV" >> ~/code/apikey.properties
       - run: echo "TRAKT_CLIENT_SECRET_DEV=$TRAKT_CLIENT_SECRET_DEV" >> ~/code/apikey.properties
-      - run: echo "TMDB_TOKEN=TMDB_TOKEN" >> ~/code/apikey.properties
-      - run: echo "TVDB_KEY=TVDB_KEY" >> ~/code/apikey.properties
-      - run: echo "FANART_KEY=FANART_KEY" >> ~/code/apikey.properties
+      - run: echo "TMDB_TOKEN=$TMDB_TOKEN" >> ~/code/apikey.properties
+      - run: echo "TVDB_KEY=$TVDB_KEY" >> ~/code/apikey.properties
+      - run: echo "FANART_KEY=$FANART_KEY" >> ~/code/apikey.properties
+      - run: echo "keyAlias=$keyAlias" >> ~/code/apikey.properties
+      - run: echo "keyPassword=$keyPassword" >> ~/code/apikey.properties
+      - run: echo "storePassword=$storePassword" >> ~/code/apikey.properties
+      - run: echo "storeFile=~/code/android.jks" >> ~/code/apikey.properties
+      - run: echo $keystore | base64 --decode > android.jks
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       #      - run:
