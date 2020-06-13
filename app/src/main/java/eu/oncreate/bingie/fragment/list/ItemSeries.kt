@@ -13,7 +13,9 @@ import eu.oncreate.bingie.fragment.details.DetailsFragment.Companion.getTransiti
 import eu.oncreate.bingie.fragment.details.DetailsFragment.Companion.getTransitionNameRatingBar
 import eu.oncreate.bingie.utils.GlideUtils.loadCenterCropRound
 import eu.oncreate.bingie.utils.epoxy.KotlinEpoxyHolder
-import java.time.Duration
+import eu.oncreate.bingie.utils.hoursString
+import eu.oncreate.bingie.utils.hoursToDaysString
+import eu.oncreate.bingie.utils.minutesToHours
 
 @EpoxyModelClass(layout = R.layout.item_series)
 abstract class ItemSeries : EpoxyModelWithHolder<ItemSeries.Holder>() {
@@ -43,16 +45,14 @@ abstract class ItemSeries : EpoxyModelWithHolder<ItemSeries.Holder>() {
 
     private fun getDuration(minutes: Long, context: Context): String {
 
-        val durationHours = Duration.ofMinutes(minutes).toHours()
+        val durationHours = minutes.minutesToHours()
 
         return if (durationHours > 24) {
-            context.getString(R.string.days, durationHours.toTime(24f))
+            context.getString(R.string.days, durationHours.hoursToDaysString())
         } else {
-            context.getString(R.string.hours, durationHours.toTime(1f))
+            context.getString(R.string.hours, durationHours.hoursString())
         }
     }
-
-    private fun Long.toTime(divider: Float): String = String.format("%.2f", this.div(divider))
 
     class Holder : KotlinEpoxyHolder() {
         val poster by bind<ImageView>(R.id.imageView)
