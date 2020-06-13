@@ -18,10 +18,10 @@ jobs:
       - run: echo "TMDB_TOKEN=$TMDB_TOKEN" >> ~/code/apikey.properties
       - run: echo "TVDB_KEY=$TVDB_KEY" >> ~/code/apikey.properties
       - run: echo "FANART_KEY=$FANART_KEY" >> ~/code/apikey.properties
-      - run: echo "keyAlias=$keyAlias" >> ~/code/apikey.properties
-      - run: echo "keyPassword=$keyPassword" >> ~/code/apikey.properties
-      - run: echo "storePassword=$storePassword" >> ~/code/apikey.properties
-      - run: echo "storeFile=~/code/android.jks" >> ~/code/apikey.properties
+      - run: echo "keyAlias=$keyAlias" >> ~/code/keystore.properties
+      - run: echo "keyPassword=$keyPassword" >> ~/code/keystore.properties
+      - run: echo "storePassword=$storePassword" >> ~/code/keystore.properties
+      - run: echo "storeFile=~/code/android.jks" >> ~/code/keystore.properties
       - run: echo $keystore | base64 --decode > android.jks
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
