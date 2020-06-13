@@ -1,6 +1,7 @@
 package eu.oncreate.bingie.fragment.list
 
 import android.content.Context
+import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -160,11 +161,10 @@ class DonutProgress : View {
         attrs,
         defStyleAttr
     ) {
-        defaultTextSize = Utils.sp2px(resources, 18f)
-        minSize = Utils.dp2px(resources, 100f).toInt()
-        defaultStrokeWidth = Utils.dp2px(resources, 10f)
-        defaultInnerBottomTextSize =
-            Utils.sp2px(resources, 18f)
+        defaultTextSize = sp2px(resources, 18f)
+        minSize = dp2px(resources, 100f).toInt()
+        defaultStrokeWidth = dp2px(resources, 10f)
+        defaultInnerBottomTextSize = sp2px(resources, 18f)
 
         val attributes = context.theme
             .obtainStyledAttributes(attrs, R.styleable.DonutProgress, defStyleAttr, 0)
@@ -431,5 +431,15 @@ class DonutProgress : View {
         if (!TextUtils.isEmpty(percent)) {
             progress = (percent.toInt().toFloat())
         }
+    }
+
+    fun dp2px(resources: Resources, dp: Float): Float {
+        val scale = resources.displayMetrics.density
+        return dp * scale + 0.5f
+    }
+
+    fun sp2px(resources: Resources, sp: Float): Float {
+        val scale = resources.displayMetrics.scaledDensity
+        return sp * scale
     }
 }

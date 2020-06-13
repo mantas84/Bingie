@@ -1,7 +1,10 @@
 package eu.oncreate.bingie.api.model
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class SearchResultItem(
     @Json(name = "score")
     val score: Double,
@@ -9,4 +12,4 @@ data class SearchResultItem(
     val show: Show,
     @Json(name = "type")
     val type: String
-)
+) : Parcelable

@@ -1,7 +1,10 @@
 package eu.oncreate.bingie.api.model
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Ids(
     @Json(name = "imdb")
     val imdb: String?,
@@ -15,4 +18,4 @@ data class Ids(
     val tvdb: Int?,
     @Json(name = "tvrage")
     val tvrage: String?
-)
+) : Parcelable

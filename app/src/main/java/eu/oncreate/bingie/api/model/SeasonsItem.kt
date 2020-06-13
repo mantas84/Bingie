@@ -8,11 +8,11 @@ data class SeasonsItem(
     @Json(name = "episode_count")
     val episodeCount: Int,
     @Json(name = "first_aired")
-    val firstAired: String,
+    val firstAired: String?,
     @Json(name = "ids")
     val ids: Ids,
     @Json(name = "network")
-    val network: String,
+    val network: String?,
     @Json(name = "number")
     val number: Int,
     @Json(name = "overview")
