@@ -4,7 +4,10 @@ import android.content.Context
 import android.view.View
 import com.airbnb.epoxy.TypedEpoxyController
 
-class ListController(private val context: Context, private val listener: (ShowWithImages, view: View) -> Unit) :
+class ListController(
+    private val context: Context,
+    private val listener: (ShowWithImages, view: View, view2: View) -> Unit
+) :
     TypedEpoxyController<List<ShowWithImages>>() {
 
     override fun buildModels(data: List<ShowWithImages>) {

@@ -15,10 +15,10 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import eu.oncreate.bingie.R
 import eu.oncreate.bingie.fragment.base.BaseFragment
+import eu.oncreate.bingie.fragment.details.DetailsFragment
 import eu.oncreate.bingie.fragment.details.InitialDetailsState
 import eu.oncreate.bingie.utils.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_list.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class ListFragment : BaseFragment() {
@@ -33,9 +33,11 @@ class ListFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // todo Add to baseFragment??
-        controller = ListController(requireContext()) { searchResultItem, view ->
+        controller = ListController(requireContext()) { searchResultItem, view, view2 ->
+            val show = searchResultItem.searchResultItem.show
             val extras = FragmentNavigatorExtras(
-                view to searchResultItem.searchResultItem.show.ids.trakt.toString()
+                view to DetailsFragment.getTransitionNamePicture(show),
+                view2 to DetailsFragment.getTransitionNameRatingBar(show)
             )
             navigator
                 .navigate(
@@ -81,7 +83,6 @@ class ListFragment : BaseFragment() {
     }
 
     override fun invalidate() = withState(viewModel) { state ->
-        Timber.d("state $state")
         controller.setData(state.data)
     }
 }

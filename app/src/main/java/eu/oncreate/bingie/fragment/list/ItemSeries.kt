@@ -9,7 +9,9 @@ import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelClass
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import eu.oncreate.bingie.R
-import eu.oncreate.bingie.utils.GlideUtils.loadCenterCrop
+import eu.oncreate.bingie.fragment.details.DetailsFragment.Companion.getTransitionNamePicture
+import eu.oncreate.bingie.fragment.details.DetailsFragment.Companion.getTransitionNameRatingBar
+import eu.oncreate.bingie.utils.GlideUtils.loadCenterCropRound
 import eu.oncreate.bingie.utils.epoxy.KotlinEpoxyHolder
 import java.time.Duration
 
@@ -17,7 +19,7 @@ import java.time.Duration
 abstract class ItemSeries : EpoxyModelWithHolder<ItemSeries.Holder>() {
 
     @EpoxyAttribute(EpoxyAttribute.Option.DoNotHash)
-    lateinit var listener: (ShowWithImages, View) -> Unit
+    lateinit var listener: (ShowWithImages, View, View) -> Unit
 
     @EpoxyAttribute
     lateinit var item: ShowWithImages
@@ -26,14 +28,14 @@ abstract class ItemSeries : EpoxyModelWithHolder<ItemSeries.Holder>() {
         holder.apply {
             val show = item.searchResultItem.show
 
-            poster.transitionName = show.ids.trakt.toString()
-            itemHolder.setOnClickListener { listener(item, poster) }
+            poster.transitionName = getTransitionNamePicture(show)
+            rating.transitionName = getTransitionNameRatingBar(show)
+            itemHolder.setOnClickListener { listener(item, poster, rating) }
 
             title.text = show.title.orEmpty()
-            poster.loadCenterCrop(item.getImage())
+            poster.loadCenterCropRound(item.getImage(), 24)
             rating.isVisible = show.votes > 0
-            rating.setDonutProgress(show.rating.div(100).toInt().toString())
-            rating.progress = show.rating.times(10f).toFloat()
+            rating.progress = show.rating.times(100f).toInt().div(10f)
             duration.text =
                 getDuration(show.airedEpisodes * show.runtime.toLong(), duration.context)
         }

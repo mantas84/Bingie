@@ -5,6 +5,8 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import eu.oncreate.bingie.R
@@ -14,7 +16,7 @@ object GlideUtils {
     fun ImageView.load(imageUrl: String) {
         GlideApp.with(this)
             .load(imageUrl)
-            .placeholder(R.drawable.ic_launcher_foreground)
+            .placeholder(R.drawable.ic_undraw_monitor_iqpq)
             .fitCenter()
             .into(this)
     }
@@ -23,8 +25,8 @@ object GlideUtils {
     fun ImageView.loadCenterCrop(
         imageUrl: String?,
         onLoadingFinished: () -> Unit = {},
-        @DrawableRes placeHolder: Int = R.drawable.ic_launcher_foreground,
-        @DrawableRes errorDrawable: Int = R.drawable.ic_launcher_foreground
+        @DrawableRes placeHolder: Int = R.drawable.ic_undraw_monitor_iqpq,
+        @DrawableRes errorDrawable: Int = R.drawable.ic_undraw_monitor_iqpq
     ) {
         val listener = object : RequestListener<Drawable> {
             override fun onLoadFailed(
@@ -55,6 +57,21 @@ object GlideUtils {
             .error(errorDrawable)
             .centerCrop()
             .listener(listener)
+            .into(this)
+    }
+
+    fun ImageView.loadCenterCropRound(
+        imageUrl: String?,
+        cornerRadius: Int,
+        @DrawableRes placeHolder: Int = R.drawable.ic_undraw_monitor_iqpq,
+        @DrawableRes errorDrawable: Int = R.drawable.ic_undraw_monitor_iqpq
+    ) {
+
+        GlideApp.with(this)
+            .load(imageUrl)
+            .placeholder(placeHolder)
+            .error(errorDrawable)
+            .transform(CenterCrop(), RoundedCorners(cornerRadius))
             .into(this)
     }
 }

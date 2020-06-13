@@ -47,6 +47,7 @@ class ListViewModel @AssistedInject constructor(
 
     private fun observeChanges() = withState { state ->
         querySubject
+            .startWith("")
             .distinctUntilChanged()
             .debounce(400, TimeUnit.MILLISECONDS)
             .switchMapSingle { traktSearch(it, state) }
