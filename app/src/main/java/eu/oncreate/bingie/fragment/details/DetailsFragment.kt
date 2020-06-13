@@ -13,8 +13,11 @@ import eu.oncreate.bingie.R
 import eu.oncreate.bingie.api.model.Show
 import eu.oncreate.bingie.fragment.base.BaseFragment
 import eu.oncreate.bingie.utils.GlideUtils.loadCenterCrop
+import eu.oncreate.bingie.utils.hoursString
+import eu.oncreate.bingie.utils.hoursToDaysString
 import it.sephiroth.android.library.numberpicker.doOnProgressChanged
 import kotlinx.android.synthetic.main.fragment_details.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class DetailsFragment : BaseFragment() {
@@ -73,7 +76,7 @@ class DetailsFragment : BaseFragment() {
             detailsSeriesRating.isVisible = show.votes > 0
             detailsSeriesRating.progress = show.rating.times(100f).toInt().div(10f)
             detailsSeasons.text = if (state.seasons.isNotEmpty()) {
-                state.seasons.size.toString()
+                state.totalSeasons.toString()
             } else {
                 ""
             }
@@ -106,7 +109,14 @@ class DetailsFragment : BaseFragment() {
         detailsEpisodeStartSlider.progress = state.startEpisode
         detailsEpisodeEndSlider.progress = state.endEpisode
 
-        detailsTicker.text = state.bingieTime.toString()
+        val timePair = if (state.bingieTime > 24) {
+            Pair(getString(R.string.daysOnly), state.bingieTime.hoursToDaysString())
+        } else {
+            Pair(getString(R.string.hoursOnly), state.bingieTime.hoursString())
+        }
+
+        detailsTicker.text = timePair.second
+        detailsTickerLabel.text = timePair.first
     }
 
     private fun enableSlider(value: Boolean) {

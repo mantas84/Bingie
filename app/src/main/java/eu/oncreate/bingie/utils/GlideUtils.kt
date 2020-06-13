@@ -16,7 +16,7 @@ object GlideUtils {
     fun ImageView.load(imageUrl: String) {
         GlideApp.with(this)
             .load(imageUrl)
-            .placeholder(R.drawable.ic_undraw_monitor_iqpq)
+            .placeholder(R.drawable.ic_undraw_monitor)
             .fitCenter()
             .into(this)
     }
@@ -25,8 +25,8 @@ object GlideUtils {
     fun ImageView.loadCenterCrop(
         imageUrl: String?,
         onLoadingFinished: () -> Unit = {},
-        @DrawableRes placeHolder: Int = R.drawable.ic_undraw_monitor_iqpq,
-        @DrawableRes errorDrawable: Int = R.drawable.ic_undraw_monitor_iqpq
+        @DrawableRes placeHolder: Int = R.drawable.ic_undraw_monitor,
+        @DrawableRes errorDrawable: Int = R.drawable.ic_undraw_monitor
     ) {
         val listener = object : RequestListener<Drawable> {
             override fun onLoadFailed(
@@ -63,8 +63,8 @@ object GlideUtils {
     fun ImageView.loadCenterCropRound(
         imageUrl: String?,
         cornerRadius: Int,
-        @DrawableRes placeHolder: Int = R.drawable.ic_undraw_monitor_iqpq,
-        @DrawableRes errorDrawable: Int = R.drawable.ic_undraw_monitor_iqpq
+        @DrawableRes placeHolder: Int = R.drawable.ic_undraw_monitor,
+        @DrawableRes errorDrawable: Int = R.drawable.ic_undraw_monitor
     ) {
 
         GlideApp.with(this)
