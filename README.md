@@ -21,3 +21,12 @@ TVDB_KEY=
 FANART_KEY =
 ```
 Put file apikey.properties in the project directory bingie/apikey.properties
+
+Similary create keystore.properties file with
+
+```
+storePassword=
+keyPassword=
+keyAlias=
+storeFile=${path to jks keystore}
+```
