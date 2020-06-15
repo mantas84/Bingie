@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Bingie</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="days">%1$s days</string>
+    <string name="daysOnly">days</string>
     <string name="hours">%1$s hours</string>
+    <string name="hoursOnly">hours</string>
+    <string name="seasons">Seasons</string>
+    <string name="episodes">Episodes</string>
+    <string name="runtime">Runtime</string>
+    <string name="status">Status</string>
+    <string name="description">Description</string>
 </resources>

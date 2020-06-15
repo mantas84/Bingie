@@ -4,32 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/listItemHolder"
     android:layout_width="match_parent"
-    android:padding="16dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="16dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/imageCard"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:backgroundTint="@android:color/holo_green_dark"
-        app:cardCornerRadius="16dp"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.google.android.material.card.MaterialCardView>
-
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@color/colorPrimary" />
 
     <eu.oncreate.bingie.fragment.list.DonutProgress
         android:id="@+id/seriesRating"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:elevation="8dp"
         app:donut_background_color="@android:color/black"
         app:donut_circle_starting_degree="270"
         app:donut_finished_stroke_width="4dp"
@@ -37,8 +27,8 @@
         app:donut_text_color="@android:color/white"
         app:donut_text_size="10dp"
         app:donut_unfinished_stroke_width="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageCard"
-        app:layout_constraintEnd_toEndOf="@+id/imageCard"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
         tools:donut_progress="90" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -48,9 +38,9 @@
         android:layout_marginTop="16dp"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        app:layout_constraintEnd_toEndOf="@+id/imageCard"
-        app:layout_constraintStart_toStartOf="@+id/imageCard"
-        app:layout_constraintTop_toBottomOf="@+id/imageCard"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
         tools:text="Series name" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -60,8 +50,9 @@
         android:layout_marginTop="4dp"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-        app:layout_constraintEnd_toEndOf="@+id/imageCard"
-        app:layout_constraintStart_toStartOf="@+id/imageCard"
+        app:layout_constraintEnd_toStartOf="@+id/seriesDurationLeft"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/seriesTitle"
         tools:text="Duration" />
 
@@ -70,10 +61,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
         android:maxLines="1"
+        android:textAlignment="textEnd"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-        app:layout_constraintEnd_toEndOf="@+id/imageCard"
-        app:layout_constraintStart_toStartOf="@+id/imageCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/seriesDuration"
         app:layout_constraintTop_toBottomOf="@+id/seriesTitle"
         tools:text="Left" />
 
