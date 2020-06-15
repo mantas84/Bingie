@@ -17,7 +17,6 @@ import eu.oncreate.bingie.utils.hoursString
 import eu.oncreate.bingie.utils.hoursToDaysString
 import it.sephiroth.android.library.numberpicker.doOnProgressChanged
 import kotlinx.android.synthetic.main.fragment_details.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class DetailsFragment : BaseFragment() {

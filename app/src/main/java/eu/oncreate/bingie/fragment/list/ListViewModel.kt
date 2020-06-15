@@ -1,6 +1,7 @@
 package eu.oncreate.bingie.fragment.list
 
 import com.airbnb.mvrx.FragmentViewModelContext
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
@@ -21,7 +22,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class ListViewModel @AssistedInject constructor(
@@ -50,11 +50,11 @@ class ListViewModel @AssistedInject constructor(
             .startWith("")
             .distinctUntilChanged()
             .debounce(400, TimeUnit.MILLISECONDS)
+            .doOnNext { setState { copy(searchResult = Loading()) } }
             .switchMapSingle { traktSearch(it, state) }
-            .doOnError { Timber.d("Error here $it") }
             .execute {
                 when (it) {
-                    is Success -> copy(searchResult = it, data = it.invoke().orEmpty())
+                    is Success -> { copy(searchResult = it, data = it.invoke().orEmpty()) }
                     else -> copy(searchResult = it)
                 }
             }

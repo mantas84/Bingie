@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
-import androidx.core.widget.doOnTextChanged
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.mvrx.Loading
 import com.airbnb.mvrx.MvRx
 import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
@@ -31,9 +32,7 @@ class ListFragment : BaseFragment() {
     private lateinit var controller: ListController
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // todo Add to baseFragment??
-        controller = ListController(requireContext()) { searchResultItem, view, view2 ->
+        controller = ListController { searchResultItem, view, view2 ->
             val show = searchResultItem.searchResultItem.show
             val extras = FragmentNavigatorExtras(
                 view to DetailsFragment.getTransitionNamePicture(show),
@@ -49,15 +48,15 @@ class ListFragment : BaseFragment() {
         }
         searchList.layoutManager = LinearLayoutManager(requireContext())
         searchList.setController(controller)
-        // 1
+
         postponeEnterTransition()
-// 2
+
         searchList.viewTreeObserver.addOnPreDrawListener {
-            // 3
             startPostponedEnterTransition()
             true
         }
-        invalidate()
+
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -70,19 +69,25 @@ class ListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchQuery.doOnTextChanged { text, start, count, after ->
-            viewModel.queryChanged(text?.toString().orEmpty())
-        }
-        searchQuery.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                v.hideKeyboard()
-                return@OnEditorActionListener true
+        searchQuery.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchQuery.hideKeyboard()
+                return true
             }
-            false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.queryChanged(newText.orEmpty())
+                return true
+            }
         })
+
+        listSettings.setOnClickListener {
+            Toast.makeText(requireContext(), "Not yet", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun invalidate() = withState(viewModel) { state ->
-        controller.setData(state.data)
+        listLoadindIndicator.isVisible = state.searchResult is Loading
+        controller.setData(Pair(state.data, state.searchResult is Loading))
     }
 }
