@@ -71,7 +71,7 @@ class Datasource @Inject constructor(
             })
     }
 
-    private fun getFanartPicture(tvdbId: Int?): Single<FanartImages> {
+    private fun getFanartPicture(tvdbId: Int?, forceUpdate: Boolean = false): Single<FanartImages> {
 
         val fanartFallback = FanartImages.EMPTY
 
@@ -81,7 +81,7 @@ class Datasource @Inject constructor(
                 local
                     .getFanart(tvdbId)
                     .flatMap { localFanartList ->
-                        if (localFanartList.isNotEmpty()) {
+                        if (localFanartList.isNotEmpty() && !forceUpdate) {
                             Single.just(localFanartList.first())
                         } else {
                             (fanartApi
@@ -98,7 +98,7 @@ class Datasource @Inject constructor(
         }
     }
 
-    private fun getTmdbImages(tmdbId: Int?): Single<TmdbImages> {
+    private fun getTmdbImages(tmdbId: Int?, forceUpdate: Boolean = false): Single<TmdbImages> {
 
         val tmdbFallback = TmdbImages.EMPTY
 
@@ -107,7 +107,7 @@ class Datasource @Inject constructor(
             else -> local
                 .getTmdbImages(tmdbId)
                 .flatMap { localImages ->
-                    if (localImages.isNotEmpty()) {
+                    if (localImages.isNotEmpty() && !forceUpdate) {
                         Single.just(localImages.first())
                     } else {
                         (tmdbApi
@@ -124,11 +124,11 @@ class Datasource @Inject constructor(
         }
     }
 
-    fun getSeasons(traktId: Int): Single<List<SeasonsItem>> {
+    fun getSeasons(traktId: Int, forceUpdate: Boolean = false): Single<List<SeasonsItem>> {
         return local
             .getSeasons(traktId)
             .flatMap {
-                if (it.isNotEmpty()) {
+                if (it.isNotEmpty() && !forceUpdate) {
                     Single.just(it)
                 } else {
                     traktApi
@@ -141,10 +141,10 @@ class Datasource @Inject constructor(
             }
     }
 
-    fun getShow(traktId: Int): Single<SearchResultItem> {
+    fun getShow(traktId: Int, forceUpdate: Boolean = false): Single<SearchResultItem> {
         return local.getShow(traktId)
             .flatMap {
-                if (it.isNotEmpty()) {
+                if (it.isNotEmpty() && !forceUpdate) {
                     Single.just(it.first())
                 } else {
                     traktApi

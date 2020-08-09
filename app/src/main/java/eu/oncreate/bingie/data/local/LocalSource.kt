@@ -57,5 +57,4 @@ class LocalSource @Inject constructor(private val roomDb: RoomDb) {
             .searchResultItemDao()
             .insertAllSearchResultItem(searchResults.map { SearchResultItem.toLocal(it) })
     }
-
 }

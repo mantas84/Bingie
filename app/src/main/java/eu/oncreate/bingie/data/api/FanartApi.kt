@@ -12,6 +12,6 @@ interface FanartApi {
     @GET("tv/{id}")
     fun getImages(
         @Path("id") tvdbId: Int,
-        @Query("api_key") apiKey: String= BuildConfig.FANART_KEY
+        @Query("api_key") apiKey: String = BuildConfig.FANART_KEY
     ): Single<FanartImages>
 }
