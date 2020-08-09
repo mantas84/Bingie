@@ -3,7 +3,7 @@ package eu.oncreate.bingie.fragment.list
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
 import com.airbnb.mvrx.Uninitialized
-import eu.oncreate.bingie.api.model.tmdb.Configuration
+import eu.oncreate.bingie.data.api.model.tmdb.Configuration
 
 data class State(
     val query: String = "",

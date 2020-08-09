@@ -7,28 +7,18 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import eu.oncreate.bingie.BuildConfig
-import eu.oncreate.bingie.api.FanartApi
-import eu.oncreate.bingie.api.TmdbApi
-import eu.oncreate.bingie.api.TraktApi
-import eu.oncreate.bingie.api.model.SearchResultItem
-import eu.oncreate.bingie.api.model.fanart.FanartImages
-import eu.oncreate.bingie.api.model.tmdb.Configuration
-import eu.oncreate.bingie.api.model.tmdb.TmdbImages
+import eu.oncreate.bingie.data.Datasource
 import eu.oncreate.bingie.fragment.base.MvRxViewModel
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 class ListViewModel @AssistedInject constructor(
     @Assisted state: State,
-    private val traktApi: TraktApi,
-    private val tmdbApi: TmdbApi,
-    private val fanartApi: FanartApi
+    private val datasource: Datasource
 ) : MvRxViewModel<State>(state) {
 
     private val disposable = CompositeDisposable()
@@ -41,7 +31,6 @@ class ListViewModel @AssistedInject constructor(
     }
 
     init {
-        checkTmdbConfig()
         observeChanges()
     }
 
@@ -61,66 +50,18 @@ class ListViewModel @AssistedInject constructor(
     }
 
     private fun traktSearch(query: String, state: State): Single<List<ShowWithImages>> {
-        return traktApi.search(query)
+        return datasource.search(query)
             .subscribeOn(Schedulers.io())
             .flatMap {
                 val config = state.tmdbConfig.invoke()
 
                 val pairs = Observable
                     .fromIterable(it)
-                    .flatMapSingle { item -> getImages(item, config) }
+                    .flatMapSingle { item -> datasource.getImages(item) }
                     .toList()
                     .map { it.toList() }
                 pairs
             }
-    }
-
-    private fun getImages(
-        item: SearchResultItem,
-        configuration: Configuration?
-    ): Single<ShowWithImages> {
-
-        val tmdbFallback = TmdbImages(backdrops = emptyList(), id = -1, posters = emptyList())
-
-        val fanartFallback = FanartImages(
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-        )
-
-        val tmdb = when (val id = item.show.ids.tmdb) {
-            null -> Single.just(tmdbFallback)
-            else -> tmdbApi.getImages(id, BuildConfig.TMDB_TOKEN).onErrorReturnItem(tmdbFallback)
-        }
-
-        val fanart = when (val id = item.show.ids.tvdb) {
-            null -> Single.just(fanartFallback)
-            else -> fanartApi.getImages(id, BuildConfig.FANART_KEY)
-                .onErrorReturnItem(fanartFallback)
-        }
-
-        return Single.zip(
-            tmdb,
-            fanart,
-            BiFunction { tmdbImage: TmdbImages, fanartImage: FanartImages ->
-                ShowWithImages(
-                    item,
-                    tmdbImage.takeUnless { it.id == -1 },
-                    configuration?.images,
-                    fanartImage.takeUnless { it.thetvdbId == null }
-                )
-            })
     }
 
     @AssistedInject.Factory
@@ -134,14 +75,6 @@ class ListViewModel @AssistedInject constructor(
                 (viewModelContext as FragmentViewModelContext).fragment<ListFragment>()
             return fragment.viewModelFactory.create(state)
         }
-    }
-
-    private fun checkTmdbConfig() {
-        // todo do caching
-        tmdbApi
-            .getConfiguration(BuildConfig.TMDB_TOKEN)
-            .subscribeOn(Schedulers.io())
-            .execute { copy(tmdbConfig = it) }
     }
 
     override fun onCleared() {

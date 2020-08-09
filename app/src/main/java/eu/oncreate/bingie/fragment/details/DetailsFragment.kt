@@ -10,7 +10,6 @@ import com.airbnb.mvrx.fragmentViewModel
 import com.airbnb.mvrx.withState
 import com.robinhood.ticker.TickerUtils
 import eu.oncreate.bingie.R
-import eu.oncreate.bingie.api.model.Show
 import eu.oncreate.bingie.fragment.base.BaseFragment
 import eu.oncreate.bingie.utils.GlideUtils.loadCenterCrop
 import eu.oncreate.bingie.utils.hoursString
@@ -64,7 +63,7 @@ class DetailsFragment : BaseFragment() {
 
     override fun invalidate() = withState(viewModel) { state ->
 
-        state.item.apply {
+        state.item?.apply {
             val show = searchResultItem.show
             detailsHeader.loadCenterCrop(getImage(), { startPostponedEnterTransition() })
             detailsTitle.text = show.title
@@ -126,7 +125,7 @@ class DetailsFragment : BaseFragment() {
     }
 
     companion object {
-        fun getTransitionNamePicture(show: Show) = show.ids.trakt.toString()
-        fun getTransitionNameRatingBar(show: Show) = "${show.ids.trakt}_rating"
+        fun getTransitionNamePicture(traktId: Int) = traktId.toString()
+        fun getTransitionNameRatingBar(traktId: Int) = "${traktId}_rating"
     }
 }

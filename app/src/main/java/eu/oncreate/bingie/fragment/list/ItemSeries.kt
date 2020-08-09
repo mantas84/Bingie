@@ -30,8 +30,8 @@ abstract class ItemSeries : EpoxyModelWithHolder<ItemSeries.Holder>() {
         holder.apply {
             val show = item.searchResultItem.show
 
-            poster.transitionName = getTransitionNamePicture(show)
-            rating.transitionName = getTransitionNameRatingBar(show)
+            poster.transitionName = getTransitionNamePicture(show.traktId)
+            rating.transitionName = getTransitionNameRatingBar(show.traktId)
             itemHolder.setOnClickListener { listener(item, poster, rating) }
 
             title.text = show.title.orEmpty()

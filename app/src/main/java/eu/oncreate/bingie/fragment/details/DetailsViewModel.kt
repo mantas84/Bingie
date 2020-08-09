@@ -9,14 +9,17 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import eu.oncreate.bingie.api.TraktApi
+import eu.oncreate.bingie.data.Datasource
+import eu.oncreate.bingie.data.local.model.trakt.SeasonsItem
 import eu.oncreate.bingie.fragment.base.MvRxViewModel
-import io.reactivex.schedulers.Schedulers
+import eu.oncreate.bingie.fragment.list.ShowWithImages
+import io.reactivex.functions.BiFunction
+import timber.log.Timber
 import kotlin.math.min
 
 class DetailsViewModel @AssistedInject constructor(
     @Assisted state: DetailsState,
-    private val traktApi: TraktApi
+    val datasource: Datasource
 ) : MvRxViewModel<DetailsState>(state) {
 
     @AssistedInject.Factory
@@ -25,7 +28,7 @@ class DetailsViewModel @AssistedInject constructor(
     }
 
     init {
-        getSeasons()
+        getData()
     }
 
     companion object : MvRxViewModelFactory<DetailsViewModel, DetailsState> {
@@ -39,17 +42,24 @@ class DetailsViewModel @AssistedInject constructor(
         }
     }
 
-    private fun getSeasons() = withState {
-        traktApi
-            .showSeasons(it.item.searchResultItem.show.ids.trakt)
-            .subscribeOn(Schedulers.io())
+    private fun getData() = withState {
+        datasource
+            .getShow(it.traktId)
+            .flatMap { item -> datasource.getImages(item) }
+            .zipWith(
+                datasource.getSeasons(it.traktId.toInt()),
+                BiFunction { showWithImages: ShowWithImages, seasons: List<SeasonsItem> ->
+                    Pair(showWithImages, seasons)
+                })
             .execute {
                 when (it) {
                     is Uninitialized -> copy()
                     is Loading -> copy()
-                    is Success -> copy(seasons = it.invoke() ?: emptyList())
+                    is Success -> copy(seasons = it.invoke()?.second ?: emptyList(), item = it.invoke()?.first)
                     // todo: fail state
-                    is Fail -> copy()
+                    is Fail -> {
+                        Timber.d("FAIL ${it.error}")
+                        copy()}
                 }
             }
     }
@@ -68,7 +78,8 @@ class DetailsViewModel @AssistedInject constructor(
                     (this.seasons.getOrNull(event.value)?.episodeCount ?: 1).coerceAtLeast(1)
                 )
             )
-            is DetailsEvent.EndSeasonChanged -> copy(endSeason = event.value,
+            is DetailsEvent.EndSeasonChanged -> copy(
+                endSeason = event.value,
                 startEpisode = min(
                     this.startEpisode,
                     (this.seasons.getOrNull(event.value)?.episodeCount ?: 1).coerceAtLeast(1)
@@ -76,7 +87,8 @@ class DetailsViewModel @AssistedInject constructor(
                 endEpisode = min(
                     this.endEpisode,
                     (this.seasons.getOrNull(event.value)?.episodeCount ?: 1).coerceAtLeast(1)
-                ))
+                )
+            )
             is DetailsEvent.StartEpisodeChanged -> copy(startEpisode = event.value)
             is DetailsEvent.EndEpisodeChanged -> copy(endEpisode = event.value)
         }

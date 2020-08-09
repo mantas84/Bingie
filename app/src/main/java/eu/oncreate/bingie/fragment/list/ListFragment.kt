@@ -35,13 +35,13 @@ class ListFragment : BaseFragment() {
         controller = ListController { searchResultItem, view, view2 ->
             val show = searchResultItem.searchResultItem.show
             val extras = FragmentNavigatorExtras(
-                view to DetailsFragment.getTransitionNamePicture(show),
-                view2 to DetailsFragment.getTransitionNameRatingBar(show)
+                view to DetailsFragment.getTransitionNamePicture(show.traktId),
+                view2 to DetailsFragment.getTransitionNameRatingBar(show.traktId)
             )
             navigator
                 .navigate(
                     R.id.action_list_to_details,
-                    bundleOf(MvRx.KEY_ARG to InitialDetailsState(searchResultItem)),
+                    bundleOf(MvRx.KEY_ARG to InitialDetailsState(searchResultItem.searchResultItem.show.traktId.toString())),
                     null,
                     extras
                 )

@@ -7,9 +7,9 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import eu.oncreate.bingie.BuildConfig
-import eu.oncreate.bingie.api.FanartApi
-import eu.oncreate.bingie.api.TmdbApi
-import eu.oncreate.bingie.api.TraktApi
+import eu.oncreate.bingie.data.api.FanartApi
+import eu.oncreate.bingie.data.api.TmdbApi
+import eu.oncreate.bingie.data.api.TraktApi
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

@@ -1,19 +1,16 @@
 package eu.oncreate.bingie.fragment.list
 
-import android.os.Parcelable
-import eu.oncreate.bingie.api.model.SearchResultItem
-import eu.oncreate.bingie.api.model.fanart.FanartImages
-import eu.oncreate.bingie.api.model.tmdb.Images
-import eu.oncreate.bingie.api.model.tmdb.TmdbImages
-import kotlinx.android.parcel.Parcelize
+import eu.oncreate.bingie.data.local.model.trakt.SearchResultItem
+import eu.oncreate.bingie.data.local.model.fanart.FanartImages
+import eu.oncreate.bingie.data.local.model.tmdb.Images
+import eu.oncreate.bingie.data.local.model.tmdb.TmdbImages
 
-@Parcelize
 data class ShowWithImages(
     val searchResultItem: SearchResultItem,
     val tmdbImages: TmdbImages?,
     val tmdbImagesConfiguration: Images?,
     val fanartImages: FanartImages?
-) : Parcelable {
+) {
 
     fun getImage(): String? = getTmdbImage() ?: getFanartImage()
 
