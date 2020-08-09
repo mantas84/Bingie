@@ -12,7 +12,7 @@ import io.reactivex.Single
 interface TmdbImagesDao {
 
     @Query("SELECT * FROM tmdbimages WHERE id = :id")
-    fun getTmdbImages(id: String): Single<List<TmdbImages>>
+    fun getTmdbImages(id: Int): Single<List<TmdbImages>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTmdbImages(item: TmdbImages): Completable

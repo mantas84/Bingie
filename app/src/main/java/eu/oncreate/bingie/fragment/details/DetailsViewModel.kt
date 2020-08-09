@@ -47,7 +47,7 @@ class DetailsViewModel @AssistedInject constructor(
             .getShow(it.traktId)
             .flatMap { item -> datasource.getImages(item) }
             .zipWith(
-                datasource.getSeasons(it.traktId.toInt()),
+                datasource.getSeasons(it.traktId),
                 BiFunction { showWithImages: ShowWithImages, seasons: List<SeasonsItem> ->
                     Pair(showWithImages, seasons)
                 })
@@ -59,7 +59,7 @@ class DetailsViewModel @AssistedInject constructor(
                     // todo: fail state
                     is Fail -> {
                         Timber.d("FAIL ${it.error}")
-                        copy()}
+                        copy() }
                 }
             }
     }

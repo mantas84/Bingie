@@ -12,7 +12,7 @@ import io.reactivex.Single
 interface SearchResultItemDao {
 
     @Query("SELECT * FROM searchresultitem WHERE traktId = :id")
-    fun getSearchResultItem(id: String): Single<List<SearchResultItem>>
+    fun getSearchResultItem(id: Int): Single<List<SearchResultItem>>
 
     @Query("SELECT * FROM searchresultitem WHERE title LIKE :query")
     fun searchSearchResultItem(query: String): Single<List<SearchResultItem>>

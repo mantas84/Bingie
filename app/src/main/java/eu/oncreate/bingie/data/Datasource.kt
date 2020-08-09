@@ -11,7 +11,6 @@ import eu.oncreate.bingie.data.local.model.trakt.SearchResultItem
 import eu.oncreate.bingie.data.local.model.trakt.SeasonsItem
 import eu.oncreate.bingie.fragment.list.ShowWithImages
 import io.reactivex.Single
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
 import timber.log.Timber
 import java.time.Instant
@@ -98,7 +97,7 @@ class Datasource @Inject constructor(
             null -> Single.just(fanartFallback)
             else ->
                 local.fanartImageDao()
-                    .getFanart(tvdbId.toString())
+                    .getFanart(tvdbId)
                     .flatMap { localFanartList ->
                         if (localFanartList.isNotEmpty()) {
                             Single.just(localFanartList.first())
@@ -113,7 +112,7 @@ class Datasource @Inject constructor(
                                     )
                                 }
                                 .andThen(
-                                    local.fanartImageDao().getFanart(tvdbId.toString())
+                                    local.fanartImageDao().getFanart(tvdbId)
                                         .map { it.firstOrNull() }))
                                 .onErrorReturnItem(fanartFallback)
                         }
@@ -131,7 +130,7 @@ class Datasource @Inject constructor(
         return when (tmdbId) {
             null -> Single.just(tmdbFallback)
             else -> local.tmdbImagesDao()
-                .getTmdbImages(tmdbId.toString())
+                .getTmdbImages(tmdbId)
                 .flatMap { localImages ->
                     if (localImages.isNotEmpty()) {
                         Single.just(localImages.first())
@@ -144,7 +143,7 @@ class Datasource @Inject constructor(
                                 )
                             }
                             .andThen(
-                                local.tmdbImagesDao().getTmdbImages(tmdbId.toString())
+                                local.tmdbImagesDao().getTmdbImages(tmdbId)
                                     .map { it.firstOrNull() }))
                             .onErrorReturnItem(tmdbFallback)
                     }
@@ -167,14 +166,14 @@ class Datasource @Inject constructor(
                             Timber.d("SEASONS from api ${seasons.size}")
                             seasons.forEach { Timber.d("SEASONS $it") }
                             local.seasonsItemDao()
-                                .insertAllSeasonsItems(seasons.map { getLocal(it,traktId) }).doOnError { Timber.d("SEASONS error $it") }
+                                .insertAllSeasonsItems(seasons.map { getLocal(it, traktId) }).doOnError { Timber.d("SEASONS error $it") }
                                 .andThen(local.seasonsItemDao().getSeasonsItem(traktId)).doOnSuccess { Timber.d("SEASONS count ${it.size}") }
                         }
                 }
             }
     }
 
-    fun getShow(traktId: String): Single<SearchResultItem> {
+    fun getShow(traktId: Int): Single<SearchResultItem> {
         return local
             .searchResultItemDao()
             .getSearchResultItem(traktId)

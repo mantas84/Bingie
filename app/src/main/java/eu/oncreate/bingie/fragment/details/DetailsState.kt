@@ -9,7 +9,7 @@ import kotlin.math.min
 
 data class DetailsState(
     @PersistState
-    val traktId: String,
+    val traktId: Int,
     val item: ShowWithImages? = null,
     val seasons: List<SeasonsItem> = emptyList(),
     val startSeason: Int = 1,

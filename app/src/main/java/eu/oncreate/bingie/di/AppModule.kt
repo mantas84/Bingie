@@ -13,7 +13,7 @@ import eu.oncreate.bingie.data.local.RoomDb
 import javax.inject.Singleton
 
 // @Module(includes = [ViewModelModule::class])
-//@Module(includes = [NetModule::class])
+// @Module(includes = [NetModule::class])
 @Module
 class AppModule {
 

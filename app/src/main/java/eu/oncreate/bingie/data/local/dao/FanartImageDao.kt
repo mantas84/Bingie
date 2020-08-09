@@ -39,7 +39,7 @@ import io.reactivex.Single
 interface FanartImageDao {
 
     @Query("SELECT * FROM fanartimages WHERE thetvdbId = :id")
-    fun getFanart(id: String): Single<List<FanartImages>>
+    fun getFanart(id: Int): Single<List<FanartImages>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFanart(fanartImages: FanartImages): Completable

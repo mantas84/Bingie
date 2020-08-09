@@ -8,5 +8,4 @@ class Converters() {
 
     @TypeConverter
     fun stringToList(value: String?) = value?.split(delimiters = *arrayOf(",, ")).orEmpty()
-
 }

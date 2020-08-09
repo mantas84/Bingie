@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class InitialDetailsState(val traktId: String) : Parcelable
+data class InitialDetailsState(val traktId: Int) : Parcelable

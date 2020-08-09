@@ -39,7 +39,7 @@ fun getLocal(item: SearchResultItem): LocalSearchResultItem {
     )
 }
 
-fun getLocal(item: SeasonsItem, seriesTraktId:Int): LocalSeasonsItem {
+fun getLocal(item: SeasonsItem, seriesTraktId: Int): LocalSeasonsItem {
     return LocalSeasonsItem(
         airedEpisodes = item.airedEpisodes,
         episodeCount = item.episodeCount,

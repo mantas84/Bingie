@@ -17,7 +17,7 @@ interface TraktApi {
     ): Single<List<SearchResultItem>>
 
     @GET("/search/trakt/{id}?type=show&extended=full&fields=title")
-    fun searchLookUp(@Path("id") traktId: String): Single<List<SearchResultItem>>
+    fun searchLookUp(@Path("id") traktId: Int): Single<List<SearchResultItem>>
 
     @GET("/shows/{showId}/seasons?extended=full")
     fun showSeasons(@Path("showId") showId: Int): Single<List<SeasonsItem>>

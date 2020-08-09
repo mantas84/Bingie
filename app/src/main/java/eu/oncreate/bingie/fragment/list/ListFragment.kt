@@ -41,7 +41,7 @@ class ListFragment : BaseFragment() {
             navigator
                 .navigate(
                     R.id.action_list_to_details,
-                    bundleOf(MvRx.KEY_ARG to InitialDetailsState(searchResultItem.searchResultItem.show.traktId.toString())),
+                    bundleOf(MvRx.KEY_ARG to InitialDetailsState(searchResultItem.searchResultItem.show.traktId)),
                     null,
                     extras
                 )
