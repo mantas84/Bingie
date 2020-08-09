@@ -33,5 +33,11 @@ data class TmdbImages(
                 posters = tmdbImages.posters.map { Poster.toBe(it) }
             )
         }
+
+        val EMPTY = TmdbImages(
+            backdrops = emptyList(),
+            id = -1,
+            posters = emptyList()
+        )
     }
 }

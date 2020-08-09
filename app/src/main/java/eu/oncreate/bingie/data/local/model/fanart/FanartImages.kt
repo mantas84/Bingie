@@ -127,5 +127,22 @@ data class FanartImages(
                 tvthumb = tvthumbs
             )
         }
+
+        val EMPTY = FanartImages(
+            "-1",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
     }
 }
