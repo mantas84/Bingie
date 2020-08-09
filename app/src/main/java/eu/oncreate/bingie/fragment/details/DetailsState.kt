@@ -15,7 +15,8 @@ data class DetailsState(
     val startSeason: Int = 1,
     val endSeason: Int = 1,
     val startEpisode: Int = 1,
-    val endEpisode: Int = 1
+    val endEpisode: Int = 1,
+    val isRefreshing: Boolean = false
 ) : MvRxState {
     constructor(initState: InitialDetailsState) : this(traktId = initState.traktId)
 
@@ -33,7 +34,10 @@ data class DetailsState(
     val episodeStartMin = 1
     val episodeStartMax = when (startSeason) {
         endSeason -> {
-            min(seasons.find { it.number == startSeason }?.episodeCount ?: 1, endEpisode).coerceAtLeast(1)
+            min(
+                seasons.find { it.number == startSeason }?.episodeCount ?: 1,
+                endEpisode
+            ).coerceAtLeast(1)
         }
         else -> (seasons.find { it.number == startSeason }?.episodeCount ?: 1).coerceAtLeast(1)
     }
@@ -43,7 +47,8 @@ data class DetailsState(
         else -> 1
     }
 
-    val episodeEndMax = (seasons.find { it.number == endSeason }?.episodeCount ?: 1).coerceAtLeast(1)
+    val episodeEndMax =
+        (seasons.find { it.number == endSeason }?.episodeCount ?: 1).coerceAtLeast(1)
 
     val startEp = seasons
         .filter { it.number < startSeason }
@@ -55,5 +60,6 @@ data class DetailsState(
         .fold(0, { acc, seasonsItem -> acc + seasonsItem.airedEpisodes }) +
             min(seasons.getOrNull(endSeason - 1)?.airedEpisodes ?: 0, endEpisode)
 
-    val bingieTime = ((endEp - startEp + 1L) * (item?.searchResultItem?.show?.runtime ?: 0)).minutesToHours()
+    val bingieTime =
+        ((endEp - startEp + 1L) * (item?.searchResultItem?.show?.runtime ?: 0)).minutesToHours()
 }

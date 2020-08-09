@@ -42,12 +42,12 @@ class DetailsViewModel @AssistedInject constructor(
         }
     }
 
-    private fun getData() = withState {
+    private fun getData(refresh: Boolean = false) = withState {
         datasource
-            .getShow(it.traktId)
-            .flatMap { item -> datasource.getImages(item) }
+            .getShow(it.traktId, refresh)
+            .flatMap { item -> datasource.getImages(item, refresh) }
             .zipWith(
-                datasource.getSeasons(it.traktId),
+                datasource.getSeasons(it.traktId, refresh),
                 BiFunction { showWithImages: ShowWithImages, seasons: List<SeasonsItem> ->
                     Pair(showWithImages, seasons)
                 })
@@ -55,11 +55,16 @@ class DetailsViewModel @AssistedInject constructor(
                 when (it) {
                     is Uninitialized -> copy()
                     is Loading -> copy()
-                    is Success -> copy(seasons = it.invoke()?.second ?: emptyList(), item = it.invoke()?.first)
+                    is Success -> copy(
+                        seasons = it.invoke()?.second ?: emptyList(),
+                        item = it.invoke()?.first,
+                        isRefreshing = false
+                    )
                     // todo: fail state
                     is Fail -> {
                         Timber.d("FAIL ${it.error}")
-                        copy() }
+                        copy(isRefreshing = false)
+                    }
                 }
             }
     }
@@ -91,6 +96,10 @@ class DetailsViewModel @AssistedInject constructor(
             )
             is DetailsEvent.StartEpisodeChanged -> copy(startEpisode = event.value)
             is DetailsEvent.EndEpisodeChanged -> copy(endEpisode = event.value)
+            is DetailsEvent.Refresh -> {
+                getData()
+                copy(isRefreshing = true)
+            }
         }
     }
 }

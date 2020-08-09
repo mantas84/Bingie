@@ -59,9 +59,14 @@ class DetailsFragment : BaseFragment() {
         detailsEpisodeEndSlider.doOnProgressChanged { numberPicker, progress, formUser ->
             viewModel.handleEvent(DetailsEvent.EndEpisodeChanged(progress))
         }
+        detailsRefresh.setOnRefreshListener {
+            viewModel.handleEvent(DetailsEvent.Refresh)
+        }
     }
 
     override fun invalidate() = withState(viewModel) { state ->
+
+        detailsRefresh.isRefreshing = state.isRefreshing
 
         state.item?.apply {
             val show = searchResultItem.show

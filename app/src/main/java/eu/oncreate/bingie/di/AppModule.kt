@@ -9,6 +9,7 @@ import eu.oncreate.bingie.data.Datasource
 import eu.oncreate.bingie.data.api.FanartApi
 import eu.oncreate.bingie.data.api.TmdbApi
 import eu.oncreate.bingie.data.api.TraktApi
+import eu.oncreate.bingie.data.local.LocalSource
 import eu.oncreate.bingie.data.local.RoomDb
 import javax.inject.Singleton
 
@@ -33,9 +34,9 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDataSource(
-        roomDb: RoomDb,
+        local: LocalSource,
         traktApi: TraktApi,
         fanartApi: FanartApi,
         tmdbApi: TmdbApi
-    ) = Datasource(roomDb, fanartApi, tmdbApi, traktApi)
+    ) = Datasource(local, fanartApi, tmdbApi, traktApi)
 }

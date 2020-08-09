@@ -5,4 +5,5 @@ sealed class DetailsEvent {
     data class EndSeasonChanged(val value: Int) : DetailsEvent()
     data class StartEpisodeChanged(val value: Int) : DetailsEvent()
     data class EndEpisodeChanged(val value: Int) : DetailsEvent()
+    object Refresh : DetailsEvent()
 }

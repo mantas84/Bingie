@@ -49,7 +49,7 @@ class Datasource @Inject constructor(
             .onErrorResumeNext(local.searchItems(query))
     }
 
-    fun getImages(item: SearchResultItem): Single<ShowWithImages> {
+    fun getImages(item: SearchResultItem, forceUpdate: Boolean = false): Single<ShowWithImages> {
 
         val configurationSingle = if (configuration != null) {
             Single.just(configuration!!)
@@ -58,8 +58,8 @@ class Datasource @Inject constructor(
         }
 
         return Single.zip(
-            getTmdbImages(item.show.ids.tmdb),
-            getFanartPicture(item.show.ids.tvdb),
+            getTmdbImages(item.show.ids.tmdb, forceUpdate),
+            getFanartPicture(item.show.ids.tvdb, forceUpdate),
             configurationSingle,
             Function3 { tmdbImage: TmdbImages, fanartImage: FanartImages, configuration: Configuration ->
                 ShowWithImages(

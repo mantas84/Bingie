@@ -6,313 +6,320 @@
     android:layout_height="match_parent"
     tools:context=".fragment.details.DetailsFragment">
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/detailsRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <ImageView
-                android:id="@+id/detailsHeader"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="H,16:9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <eu.oncreate.bingie.fragment.list.DonutProgress
-                android:id="@+id/detailsSeriesRating"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                app:donut_background_color="@android:color/black"
-                app:donut_circle_starting_degree="270"
-                app:donut_finished_stroke_width="4dp"
-                app:donut_stroke_padding="3dp"
-                app:donut_text_color="@android:color/white"
-                app:donut_text_size="10dp"
-                app:donut_unfinished_stroke_width="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:donut_progress="90" />
+                <ImageView
+                    android:id="@+id/detailsHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="H,16:9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/detailsTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="16dp"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/detailsHeader"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="TV series name" />
+                <eu.oncreate.bingie.fragment.list.DonutProgress
+                    android:id="@+id/detailsSeriesRating"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:donut_background_color="@android:color/black"
+                    app:donut_circle_starting_degree="270"
+                    app:donut_finished_stroke_width="4dp"
+                    app:donut_stroke_padding="3dp"
+                    app:donut_text_color="@android:color/white"
+                    app:donut_text_size="10dp"
+                    app:donut_unfinished_stroke_width="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:donut_progress="90" />
 
-            <View
-                android:id="@+id/detailsInfoBar"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailsHeader" />
+                <TextView
+                    android:id="@+id/detailsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/detailsHeader"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="TV series name" />
 
-            <View
-                android:id="@+id/detailsDivider1"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/darker_gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailsInfoBar" />
+                <View
+                    android:id="@+id/detailsInfoBar"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsHeader" />
 
-            <TextView
-                android:id="@+id/detailsSeasonsImg"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="@string/seasons"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toStartOf="@+id/detailsEpisodesImg"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/detailsInfoBar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
-                tools:ignore="ContentDescription" />
+                <View
+                    android:id="@+id/detailsDivider1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsInfoBar" />
 
-            <TextView
-                android:id="@+id/detailsSeasons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="@+id/detailsSeasonsImg"
-                app:layout_constraintStart_toStartOf="@+id/detailsSeasonsImg"
-                app:layout_constraintTop_toBottomOf="@+id/detailsSeasonsImg"
-                tools:text="15" />
+                <TextView
+                    android:id="@+id/detailsSeasonsImg"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:text="@string/seasons"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintEnd_toStartOf="@+id/detailsEpisodesImg"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/detailsInfoBar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
+                    tools:ignore="ContentDescription" />
 
-            <TextView
-                android:id="@+id/detailsEpisodesImg"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="@string/episodes"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toStartOf="@+id/detailsRuntimeImg"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/detailsSeasonsImg"
-                app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
-                tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/detailsSeasons"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintEnd_toEndOf="@+id/detailsSeasonsImg"
+                    app:layout_constraintStart_toStartOf="@+id/detailsSeasonsImg"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsSeasonsImg"
+                    tools:text="15" />
 
-            <TextView
-                android:id="@+id/detailsEpisodes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toEndOf="@+id/detailsEpisodesImg"
-                app:layout_constraintStart_toStartOf="@+id/detailsEpisodesImg"
-                app:layout_constraintTop_toBottomOf="@+id/detailsEpisodesImg"
-                tools:text="1234" />
+                <TextView
+                    android:id="@+id/detailsEpisodesImg"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:text="@string/episodes"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintEnd_toStartOf="@+id/detailsRuntimeImg"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/detailsSeasonsImg"
+                    app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
+                    tools:ignore="ContentDescription" />
 
-            <TextView
-                android:id="@+id/detailsRuntimeImg"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="@string/runtime"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toStartOf="@+id/detailsStatusImg"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/detailsEpisodesImg"
-                app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
-                tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/detailsEpisodes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintEnd_toEndOf="@+id/detailsEpisodesImg"
+                    app:layout_constraintStart_toStartOf="@+id/detailsEpisodesImg"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsEpisodesImg"
+                    tools:text="1234" />
 
-            <TextView
-                android:id="@+id/detailsRuntime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toEndOf="@+id/detailsRuntimeImg"
-                app:layout_constraintStart_toStartOf="@+id/detailsRuntimeImg"
-                app:layout_constraintTop_toBottomOf="@+id/detailsRuntimeImg"
-                tools:text="120" />
+                <TextView
+                    android:id="@+id/detailsRuntimeImg"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:text="@string/runtime"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintEnd_toStartOf="@+id/detailsStatusImg"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/detailsEpisodesImg"
+                    app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
+                    tools:ignore="ContentDescription" />
 
-            <TextView
-                android:id="@+id/detailsStatusImg"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:gravity="center"
-                android:text="@string/status"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintEnd_toEndOf="@+id/detailsInfoBar"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/detailsRuntimeImg"
-                app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
-                tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/detailsRuntime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintEnd_toEndOf="@+id/detailsRuntimeImg"
+                    app:layout_constraintStart_toStartOf="@+id/detailsRuntimeImg"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsRuntimeImg"
+                    tools:text="120" />
 
-            <TextView
-                android:id="@+id/detailsStatus"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="@+id/detailsStatusImg"
-                app:layout_constraintStart_toStartOf="@+id/detailsStatusImg"
-                app:layout_constraintTop_toBottomOf="@+id/detailsStatusImg"
-                tools:text="LOOOOOOOOOOOOOOOOOOOOOOOOONG" />
+                <TextView
+                    android:id="@+id/detailsStatusImg"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center"
+                    android:text="@string/status"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintEnd_toEndOf="@+id/detailsInfoBar"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/detailsRuntimeImg"
+                    app:layout_constraintTop_toTopOf="@+id/detailsInfoBar"
+                    tools:ignore="ContentDescription" />
 
-            <it.sephiroth.android.library.numberpicker.NumberPicker
-                android:id="@+id/detailsSeasonsStartSlider"
-                style="@style/NumberPicker.Filled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
-                android:progress="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailsInfoBar"
-                app:picker_orientation="vertical"
-                app:picker_stepSize="1"
-                app:picker_tracker="exponential" />
+                <TextView
+                    android:id="@+id/detailsStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintEnd_toEndOf="@+id/detailsStatusImg"
+                    app:layout_constraintStart_toStartOf="@+id/detailsStatusImg"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsStatusImg"
+                    tools:text="LOOOOOOOOOOOOOOOOOOOOOOOOONG" />
 
-            <it.sephiroth.android.library.numberpicker.NumberPicker
-                android:id="@+id/detailsEpisodeStartSlider"
-                style="@style/NumberPicker.Filled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:progress="1"
-                app:layout_constraintStart_toEndOf="@+id/detailsSeasonsStartSlider"
-                app:layout_constraintTop_toTopOf="@+id/detailsSeasonsStartSlider"
-                app:picker_orientation="vertical"
-                app:picker_stepSize="1"
-                app:picker_tracker="exponential" />
+                <it.sephiroth.android.library.numberpicker.NumberPicker
+                    android:id="@+id/detailsSeasonsStartSlider"
+                    style="@style/NumberPicker.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="32dp"
+                    android:progress="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsInfoBar"
+                    app:picker_orientation="vertical"
+                    app:picker_stepSize="1"
+                    app:picker_tracker="exponential" />
 
-            <it.sephiroth.android.library.numberpicker.NumberPicker
-                android:id="@+id/detailsSeasonsEndSlider"
-                style="@style/NumberPicker.Filled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:progress="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailsSeasonsStartSlider"
-                app:picker_orientation="vertical"
-                app:picker_tracker="exponential" />
+                <it.sephiroth.android.library.numberpicker.NumberPicker
+                    android:id="@+id/detailsEpisodeStartSlider"
+                    style="@style/NumberPicker.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:progress="1"
+                    app:layout_constraintStart_toEndOf="@+id/detailsSeasonsStartSlider"
+                    app:layout_constraintTop_toTopOf="@+id/detailsSeasonsStartSlider"
+                    app:picker_orientation="vertical"
+                    app:picker_stepSize="1"
+                    app:picker_tracker="exponential" />
 
-            <it.sephiroth.android.library.numberpicker.NumberPicker
-                android:id="@+id/detailsEpisodeEndSlider"
-                style="@style/NumberPicker.Filled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:progress="1"
-                app:layout_constraintStart_toEndOf="@+id/detailsSeasonsEndSlider"
-                app:layout_constraintTop_toTopOf="@+id/detailsSeasonsEndSlider"
-                app:picker_orientation="vertical"
-                app:picker_stepSize="1"
-                app:picker_tracker="exponential" />
+                <it.sephiroth.android.library.numberpicker.NumberPicker
+                    android:id="@+id/detailsSeasonsEndSlider"
+                    style="@style/NumberPicker.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:progress="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsSeasonsStartSlider"
+                    app:picker_orientation="vertical"
+                    app:picker_tracker="exponential" />
 
-            <com.robinhood.ticker.TickerView
-                android:id="@+id/detailsTicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@+id/detailsDivider2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/detailsEpisodeEndSlider"
-                app:layout_constraintTop_toTopOf="@+id/detailsDivider1"
-                app:ticker_animationDuration="500"
-                tools:text="1000" />
+                <it.sephiroth.android.library.numberpicker.NumberPicker
+                    android:id="@+id/detailsEpisodeEndSlider"
+                    style="@style/NumberPicker.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:progress="1"
+                    app:layout_constraintStart_toEndOf="@+id/detailsSeasonsEndSlider"
+                    app:layout_constraintTop_toTopOf="@+id/detailsSeasonsEndSlider"
+                    app:picker_orientation="vertical"
+                    app:picker_stepSize="1"
+                    app:picker_tracker="exponential" />
 
-            <TextView
-                android:id="@+id/detailsTickerLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/detailsTicker"
-                app:layout_constraintTop_toBottomOf="@+id/detailsTicker"
-                tools:text="days" />
+                <com.robinhood.ticker.TickerView
+                    android:id="@+id/detailsTicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/detailsDivider2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/detailsEpisodeEndSlider"
+                    app:layout_constraintTop_toTopOf="@+id/detailsDivider1"
+                    app:ticker_animationDuration="500"
+                    tools:text="1000" />
 
-            <View
-                android:id="@+id/detailsDivider2"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/darker_gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailsEpisodeEndSlider" />
+                <TextView
+                    android:id="@+id/detailsTickerLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@+id/detailsTicker"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsTicker"
+                    tools:text="days" />
 
-            <TextView
-                android:id="@+id/detailsDescriptionTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="24dp"
-                android:text="@string/description"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailsDivider2"
-                app:layout_constraintVertical_bias="0.0" />
+                <View
+                    android:id="@+id/detailsDivider2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsEpisodeEndSlider" />
 
-            <TextView
-                android:id="@+id/detailsDescription"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="24dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailsDescriptionTitle"
-                app:layout_constraintVertical_bias="0.0"
-                tools:text="@tools:sample/lorem/random" />
+                <TextView
+                    android:id="@+id/detailsDescriptionTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/description"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsDivider2"
+                    app:layout_constraintVertical_bias="0.0" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/detailsDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="24dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailsDescriptionTitle"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:text="@tools:sample/lorem/random" />
 
-    </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
