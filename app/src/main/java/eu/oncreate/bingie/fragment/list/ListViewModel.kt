@@ -9,11 +9,10 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import eu.oncreate.bingie.data.Datasource
 import eu.oncreate.bingie.fragment.base.MvRxViewModel
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.rx2.rxSingle
 import java.util.concurrent.TimeUnit
 
 class ListViewModel @AssistedInject constructor(
@@ -43,25 +42,25 @@ class ListViewModel @AssistedInject constructor(
             .switchMapSingle { traktSearch(it, state) }
             .execute {
                 when (it) {
-                    is Success -> { copy(searchResult = it, data = it.invoke().orEmpty()) }
+                    is Success -> {
+                        copy(searchResult = it, data = it.invoke().orEmpty())
+                    }
                     else -> copy(searchResult = it)
                 }
             }
     }
 
     private fun traktSearch(query: String, state: State): Single<List<ShowWithImages>> {
-        return datasource.search(query)
-            .subscribeOn(Schedulers.io())
-            .flatMap {
-                val config = state.tmdbConfig.invoke()
-
-                val pairs = Observable
-                    .fromIterable(it)
-                    .flatMapSingle { item -> datasource.getImages(item) }
-                    .toList()
-                    .map { it.toList() }
-                pairs
+        return rxSingle() {
+            val searchResult = datasource.search(query)
+//        val config = state.tmdbConfig.invoke()
+            val list = mutableListOf<ShowWithImages>()
+            searchResult.forEach {
+                val image = datasource.getImages(it)
+                list.add(image)
             }
+            list.toList()
+        }
     }
 
     @AssistedInject.Factory

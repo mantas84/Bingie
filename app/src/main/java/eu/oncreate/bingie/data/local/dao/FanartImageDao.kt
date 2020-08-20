@@ -18,8 +18,6 @@ import eu.oncreate.bingie.data.local.model.typeConverter.ShowbackgroundConverter
 import eu.oncreate.bingie.data.local.model.typeConverter.TvbannerConverter
 import eu.oncreate.bingie.data.local.model.typeConverter.TvposterConverter
 import eu.oncreate.bingie.data.local.model.typeConverter.TvthumbConverter
-import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 @TypeConverters(
@@ -39,10 +37,10 @@ import io.reactivex.Single
 interface FanartImageDao {
 
     @Query("SELECT * FROM fanartimages WHERE thetvdbId = :id")
-    fun getFanart(id: Int): Single<List<FanartImages>>
+    suspend fun getFanart(id: Int): List<FanartImages>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFanart(fanartImages: FanartImages): Completable
+    suspend fun insertFanart(fanartImages: FanartImages)
 
     @Query("DELETE FROM fanartimages")
     fun deleteAllFanarts()
