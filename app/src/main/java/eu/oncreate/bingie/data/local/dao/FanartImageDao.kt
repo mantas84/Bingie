@@ -42,6 +42,9 @@ interface FanartImageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFanart(fanartImages: FanartImages)
 
+    @Query("DELETE FROM fanartimages WHERE thetvdbId = :id")
+    suspend fun deleteFanart(id: Int)
+
     @Query("DELETE FROM fanartimages")
-    fun deleteAllFanarts()
+    suspend fun deleteAllFanarts()
 }

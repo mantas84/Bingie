@@ -12,8 +12,11 @@ interface SearchResultItemDao {
     @Query("SELECT * FROM searchresultitem WHERE traktId = :id")
     suspend fun getSearchResultItem(id: Int): List<SearchResultItem>
 
-    @Query("SELECT * FROM searchresultitem WHERE title LIKE :query")
+    @Query("SELECT * FROM searchresultitem WHERE title LIKE '%' || :query || '%'")
     suspend fun searchSearchResultItem(query: String): List<SearchResultItem>
+
+    @Query("SELECT * FROM searchresultitem")
+    suspend fun searchSearchResultItem(): List<SearchResultItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSearchResultItem(item: SearchResultItem)
@@ -21,6 +24,9 @@ interface SearchResultItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllSearchResultItem(items: List<SearchResultItem>)
 
+    @Query("DELETE FROM searchresultitem  WHERE traktId = :id")
+    suspend fun deleteSearchResultItem(id: Int)
+
     @Query("DELETE FROM searchresultitem")
-    fun deleteAllSearchResultItems()
+    suspend fun deleteAllSearchResultItems()
 }

@@ -7,7 +7,7 @@ import com.airbnb.mvrx.Success
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import eu.oncreate.bingie.data.Datasource
+import eu.oncreate.bingie.data.store.StoreSource
 import eu.oncreate.bingie.fragment.base.MvRxViewModel
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 class ListViewModel @AssistedInject constructor(
     @Assisted state: State,
-    private val datasource: Datasource
+    private val datasource: StoreSource
 ) : MvRxViewModel<State>(state) {
 
     private val disposable = CompositeDisposable()
@@ -53,13 +53,7 @@ class ListViewModel @AssistedInject constructor(
     private fun traktSearch(query: String, state: State): Single<List<ShowWithImages>> {
         return rxSingle() {
             val searchResult = datasource.search(query)
-//        val config = state.tmdbConfig.invoke()
-            val list = mutableListOf<ShowWithImages>()
-            searchResult.forEach {
-                val image = datasource.getImages(it)
-                list.add(image)
-            }
-            list.toList()
+            datasource.getImages(searchResult)
         }
     }
 

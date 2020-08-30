@@ -9,15 +9,14 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import eu.oncreate.bingie.data.Datasource
+import eu.oncreate.bingie.data.store.StoreSource
 import eu.oncreate.bingie.fragment.base.MvRxViewModel
 import kotlinx.coroutines.rx2.rxSingle
-import timber.log.Timber
 import kotlin.math.min
 
 class DetailsViewModel @AssistedInject constructor(
     @Assisted state: DetailsState,
-    val datasource: Datasource
+    val datasource: StoreSource
 ) : MvRxViewModel<DetailsState>(state) {
 
     @AssistedInject.Factory
@@ -51,13 +50,12 @@ class DetailsViewModel @AssistedInject constructor(
                 is Uninitialized -> copy()
                 is Loading -> copy()
                 is Success -> copy(
-                    seasons = it.invoke()?.second ?: emptyList(),
-                    item = it.invoke()?.first,
+                    seasons = it.invoke().second,
+                    item = it.invoke().first,
                     isRefreshing = false
                 )
                 // todo: fail state
                 is Fail -> {
-                    Timber.d("FAIL ${it.error}")
                     copy(isRefreshing = false)
                 }
             }

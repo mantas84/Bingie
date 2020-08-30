@@ -18,6 +18,9 @@ interface SeasonsItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllSeasonsItems(items: List<SeasonsItem>)
 
+    @Query("DELETE FROM seasonsitem WHERE seriesTraktId = :seriesTraktId")
+    suspend fun deleteSeasonsItem(seriesTraktId: Int)
+
     @Query("DELETE FROM seasonsitem")
-    fun deleteAllSeasonsItem()
+    suspend fun deleteAllSeasonsItem()
 }

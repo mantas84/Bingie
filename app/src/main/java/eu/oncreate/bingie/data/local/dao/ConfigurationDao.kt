@@ -16,5 +16,5 @@ interface ConfigurationDao {
     suspend fun insertConfiguration(configuration: Configuration)
 
     @Query("DELETE FROM configuration")
-    fun deleteConfiguration()
+    suspend fun deleteConfiguration()
 }

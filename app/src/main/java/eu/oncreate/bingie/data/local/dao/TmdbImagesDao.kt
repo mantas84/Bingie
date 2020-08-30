@@ -15,6 +15,9 @@ interface TmdbImagesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTmdbImages(item: TmdbImages)
 
+    @Query("DELETE FROM tmdbimages WHERE id = :id")
+    suspend fun deleteTmdbImage(id: Int)
+
     @Query("DELETE FROM tmdbimages")
-    fun deleteAllTmdbImages()
+    suspend fun deleteAllTmdbImages()
 }
