@@ -5,7 +5,7 @@ import com.squareup.moshi.Moshi
 import eu.oncreate.bingie.data.local.model.trakt.Airs
 import eu.oncreate.bingie.data.local.model.trakt.Ids
 
-class IdsConverter() {
+class IdsConverter {
 
     private val moshi = Moshi.Builder().build()
 
@@ -18,7 +18,7 @@ class IdsConverter() {
     fun stringToList(value: String?) = adapter.fromJson(value.orEmpty())
 }
 
-class AirsConverter() {
+class AirsConverter {
 
     private val moshi = Moshi.Builder().build()
 

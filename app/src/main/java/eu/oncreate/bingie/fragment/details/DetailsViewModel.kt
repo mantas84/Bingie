@@ -9,17 +9,14 @@ import com.airbnb.mvrx.Uninitialized
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
-import eu.oncreate.bingie.data.Datasource
-import eu.oncreate.bingie.data.local.model.trakt.SeasonsItem
+import eu.oncreate.bingie.data.store.StoreSource
 import eu.oncreate.bingie.fragment.base.MvRxViewModel
-import eu.oncreate.bingie.fragment.list.ShowWithImages
-import io.reactivex.functions.BiFunction
-import timber.log.Timber
+import kotlinx.coroutines.rx2.rxSingle
 import kotlin.math.min
 
 class DetailsViewModel @AssistedInject constructor(
     @Assisted state: DetailsState,
-    val datasource: Datasource
+    val datasource: StoreSource
 ) : MvRxViewModel<DetailsState>(state) {
 
     @AssistedInject.Factory
@@ -43,30 +40,26 @@ class DetailsViewModel @AssistedInject constructor(
     }
 
     private fun getData(refresh: Boolean = false) = withState {
-        datasource
-            .getShow(it.traktId, refresh)
-            .flatMap { item -> datasource.getImages(item, refresh) }
-            .zipWith(
-                datasource.getSeasons(it.traktId, refresh),
-                BiFunction { showWithImages: ShowWithImages, seasons: List<SeasonsItem> ->
-                    Pair(showWithImages, seasons)
-                })
-            .execute {
-                when (it) {
-                    is Uninitialized -> copy()
-                    is Loading -> copy()
-                    is Success -> copy(
-                        seasons = it.invoke()?.second ?: emptyList(),
-                        item = it.invoke()?.first,
-                        isRefreshing = false
-                    )
-                    // todo: fail state
-                    is Fail -> {
-                        Timber.d("FAIL ${it.error}")
-                        copy(isRefreshing = false)
-                    }
+        rxSingle {
+            val show = datasource.getShow(it.traktId, refresh)
+            val images = datasource.getImages(show, refresh)
+            val seasons = datasource.getSeasons(it.traktId, refresh)
+            Pair(images, seasons)
+        }.execute {
+            when (it) {
+                is Uninitialized -> copy()
+                is Loading -> copy()
+                is Success -> copy(
+                    seasons = it.invoke().second,
+                    item = it.invoke().first,
+                    isRefreshing = false
+                )
+                // todo: fail state
+                is Fail -> {
+                    copy(isRefreshing = false)
                 }
             }
+        }
     }
 
     fun handleEvent(event: DetailsEvent) = setState {

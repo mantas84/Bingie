@@ -5,11 +5,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
-import eu.oncreate.bingie.data.Datasource
+import eu.oncreate.bingie.data.store.StoreSource
 import eu.oncreate.bingie.data.api.FanartApi
 import eu.oncreate.bingie.data.api.TmdbApi
 import eu.oncreate.bingie.data.api.TraktApi
-import eu.oncreate.bingie.data.local.LocalSource
 import eu.oncreate.bingie.data.local.RoomDb
 import javax.inject.Singleton
 
@@ -34,9 +33,14 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDataSource(
-        local: LocalSource,
+        room: RoomDb,
         traktApi: TraktApi,
         fanartApi: FanartApi,
         tmdbApi: TmdbApi
-    ) = Datasource(local, fanartApi, tmdbApi, traktApi)
+    ) = StoreSource(
+        room,
+        fanartApi,
+        tmdbApi,
+        traktApi
+    )
 }

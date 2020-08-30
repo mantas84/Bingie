@@ -5,24 +5,28 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import eu.oncreate.bingie.data.local.model.trakt.SearchResultItem
-import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 interface SearchResultItemDao {
 
     @Query("SELECT * FROM searchresultitem WHERE traktId = :id")
-    fun getSearchResultItem(id: Int): Single<List<SearchResultItem>>
+    suspend fun getSearchResultItem(id: Int): List<SearchResultItem>
 
-    @Query("SELECT * FROM searchresultitem WHERE title LIKE :query")
-    fun searchSearchResultItem(query: String): Single<List<SearchResultItem>>
+    @Query("SELECT * FROM searchresultitem WHERE title LIKE '%' || :query || '%'")
+    suspend fun searchSearchResultItem(query: String): List<SearchResultItem>
+
+    @Query("SELECT * FROM searchresultitem")
+    suspend fun searchSearchResultItem(): List<SearchResultItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSearchResultItem(item: SearchResultItem): Completable
+    suspend fun insertSearchResultItem(item: SearchResultItem)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllSearchResultItem(items: List<SearchResultItem>): Completable
+    suspend fun insertAllSearchResultItem(items: List<SearchResultItem>)
+
+    @Query("DELETE FROM searchresultitem  WHERE traktId = :id")
+    suspend fun deleteSearchResultItem(id: Int)
 
     @Query("DELETE FROM searchresultitem")
-    fun deleteAllSearchResultItems()
+    suspend fun deleteAllSearchResultItems()
 }

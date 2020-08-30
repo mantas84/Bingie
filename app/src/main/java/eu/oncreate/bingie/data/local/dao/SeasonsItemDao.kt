@@ -5,21 +5,22 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import eu.oncreate.bingie.data.local.model.trakt.SeasonsItem
-import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 interface SeasonsItemDao {
 
     @Query("SELECT * FROM seasonsitem WHERE seriesTraktId = :seriesTraktId")
-    fun getSeasonsItem(seriesTraktId: Int): Single<List<SeasonsItem>>
+    suspend fun getSeasonsItem(seriesTraktId: Int): List<SeasonsItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSeasonsItem(item: SeasonsItem): Completable
+    suspend fun insertSeasonsItem(item: SeasonsItem)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllSeasonsItems(items: List<SeasonsItem>): Completable
+    suspend fun insertAllSeasonsItems(items: List<SeasonsItem>)
+
+    @Query("DELETE FROM seasonsitem WHERE seriesTraktId = :seriesTraktId")
+    suspend fun deleteSeasonsItem(seriesTraktId: Int)
 
     @Query("DELETE FROM seasonsitem")
-    fun deleteAllSeasonsItem()
+    suspend fun deleteAllSeasonsItem()
 }
