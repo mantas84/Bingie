@@ -1,9 +1,10 @@
 package eu.oncreate.bingie.data.store
 
+import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
-import com.dropbox.android.external.store4.nonFlowValueFetcher
+// import com.dropbox.android.external.store4.nonFlowValueFetcher
 import eu.oncreate.bingie.data.api.FanartApi
 import eu.oncreate.bingie.data.api.TmdbApi
 import eu.oncreate.bingie.data.api.TraktApi
@@ -35,9 +36,9 @@ class Stores(
     val configuration =
         StoreBuilder
             .from<Unit, Configuration, eu.oncreate.bingie.data.local.model.tmdb.Configuration>(
-                fetcher = nonFlowValueFetcher { tmdbApi.getConfiguration() },
-                sourceOfTruth = SourceOfTruth.fromNonFlow(
-                    reader = {
+                fetcher = Fetcher.of { tmdbApi.getConfiguration() },
+                sourceOfTruth = SourceOfTruth.of(
+                    nonFlowReader = {
                         roomDb.configurationDao().getConfiguration().firstOrNull()
                     },
                     writer = { _, item ->
@@ -54,9 +55,9 @@ class Stores(
     val fanart =
         StoreBuilder
             .from<Int, FanartImages, eu.oncreate.bingie.data.local.model.fanart.FanartImages>(
-                fetcher = nonFlowValueFetcher { fanartApi.getImages(it) },
-                sourceOfTruth = SourceOfTruth.fromNonFlow(
-                    reader = {
+                fetcher = Fetcher.of { fanartApi.getImages(it) },
+                sourceOfTruth = SourceOfTruth.of(
+                    nonFlowReader = {
                         roomDb.fanartImageDao().getFanart(it).firstOrNull()
                     },
                     writer = { _, item ->
@@ -78,9 +79,9 @@ class Stores(
     val seasons =
         StoreBuilder
             .from<Int, List<SeasonsItem>, List<eu.oncreate.bingie.data.local.model.trakt.SeasonsItem>>(
-                fetcher = nonFlowValueFetcher { traktApi.showSeasons(it) },
-                sourceOfTruth = SourceOfTruth.fromNonFlow(
-                    reader = {
+                fetcher = Fetcher.of { traktApi.showSeasons(it) },
+                sourceOfTruth = SourceOfTruth.of(
+                    nonFlowReader = {
                         roomDb.seasonsItemDao().getSeasonsItem(it).ifEmpty { null }
                     },
                     writer = { seriesId, items ->
@@ -98,9 +99,9 @@ class Stores(
     val tmdbImages =
         StoreBuilder
             .from<Int, TmdbImages, eu.oncreate.bingie.data.local.model.tmdb.TmdbImages>(
-                fetcher = nonFlowValueFetcher { tmdbApi.getImages(it) },
-                sourceOfTruth = SourceOfTruth.fromNonFlow(
-                    reader = {
+                fetcher = Fetcher.of { tmdbApi.getImages(it) },
+                sourceOfTruth = SourceOfTruth.of(
+                    nonFlowReader = {
                         roomDb.tmdbImagesDao().getTmdbImages(it).firstOrNull()
                     },
                     writer = { _, item ->
@@ -123,9 +124,9 @@ class Stores(
 
         StoreBuilder
             .from<Pair<String, Int>, List<eu.oncreate.bingie.data.api.model.SearchResultItem>, List<SearchResultItem>>(
-                fetcher = nonFlowValueFetcher { (query, page) -> traktApi.search(query) },
-                sourceOfTruth = SourceOfTruth.fromNonFlow(
-                    reader = { (query, _) ->
+                fetcher = Fetcher.of { (query, page) -> traktApi.search(query) },
+                sourceOfTruth = SourceOfTruth.of(
+                    nonFlowReader = { (query, _) ->
                         if (query.isEmpty()) {
                             roomDb.searchResultItemDao().searchSearchResultItem()
                         } else {
@@ -149,9 +150,9 @@ class Stores(
 
         StoreBuilder
             .from<Int, List<eu.oncreate.bingie.data.api.model.SearchResultItem>, List<SearchResultItem>>(
-                fetcher = nonFlowValueFetcher { traktId -> traktApi.searchLookUp(traktId) },
-                sourceOfTruth = SourceOfTruth.fromNonFlow(
-                    reader = { traktId ->
+                fetcher = Fetcher.of { traktId -> traktApi.searchLookUp(traktId) },
+                sourceOfTruth = SourceOfTruth.of(
+                    nonFlowReader = { traktId ->
                         roomDb.searchResultItemDao().getSearchResultItem(traktId)
                     },
                     writer = { traktId, items ->
