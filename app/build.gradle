@@ -27,14 +27,14 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = JavaVersion.VERSION_1_8.toString()
+//    }
 
     defaultConfig {
         applicationId "eu.oncreate.bingie"
@@ -136,5 +136,5 @@ dependencies {
 
     implementation 'com.dropbox.mobile.store:store4:4.0.0-alpha07'
 
-    compileOnly 'com.github.pengrad:jdk9-deps:1.0'
+//    compileOnly 'com.github.pengrad:jdk9-deps:1.0'
 }
