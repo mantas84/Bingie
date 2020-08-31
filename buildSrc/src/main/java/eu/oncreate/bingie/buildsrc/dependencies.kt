@@ -145,4 +145,10 @@ object Libs {
         const val compiler = "com.github.bumptech.glide:compiler:$version"
     }
 
+    object Firebase {
+        const val analytics = "com.google.firebase:firebase-analytics-ktx:17.5.0"
+        const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
+        const val perf = "com.google.firebase:firebase-perf:19.0.8"
+    }
+
 }

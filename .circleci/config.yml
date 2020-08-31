@@ -23,6 +23,10 @@ jobs:
       - run: echo "storePassword=$storePassword" >> ~/code/keystore.properties
       - run: echo "storeFile=~/code/android.jks" >> ~/code/keystore.properties
       - run: echo $keystore | base64 --decode > android.jks
+      - run: echo $firebaseProd | base64 --decode > app/src/main/google-services.json
+      - run: echo $firebaseProdDebug | base64 --decode > app/src/debug/google-services.json
+      - run: echo $firebaseDev | base64 --decode > app/src/staging/google-services.json
+      - run: echo $firebaseDevDebug | base64 --decode > app/src/staging/debug/google-services.json
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       #      - run:

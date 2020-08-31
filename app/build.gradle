@@ -5,6 +5,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 def apikeyPropertiesFile = rootProject.file('apikey.properties')
 def apikeyProperties = new Properties()
@@ -52,31 +55,50 @@ android {
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            buildConfigField("String", "TRAKT_CLIENT_ID", apikeyProperties['TRAKT_CLIENT_ID'])
-            buildConfigField("String", "TMDB_TOKEN", apikeyProperties['TMDB_TOKEN'])
-            buildConfigField("String", "TVDB_KEY", apikeyProperties['TVDB_KEY'])
-            buildConfigField("String", "FANART_KEY", apikeyProperties['FANART_KEY'])
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
         debug {
-            buildConfigField("String", "TRAKT_CLIENT_ID", apikeyProperties['TRAKT_CLIENT_ID_DEV'])
-            buildConfigField("String", "TMDB_TOKEN", apikeyProperties['TMDB_TOKEN'])
-            buildConfigField("String", "TVDB_KEY", apikeyProperties['TVDB_KEY'])
-            buildConfigField("String", "FANART_KEY", apikeyProperties['FANART_KEY'])
             minifyEnabled false
             applicationIdSuffix = ".debug"
             versionNameSuffix "-debug"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "version"
+    productFlavors {
+        prod {
+            // Assigns this product flavor to the "version" flavor dimension.
+            // If you are using only one dimension, this property is optional,
+            // and the plugin automatically assigns all the module's flavors to
+            // that dimension.
+            dimension "version"
+            buildConfigField("String", "TRAKT_CLIENT_ID", apikeyProperties['TRAKT_CLIENT_ID'])
+            buildConfigField("String", "TMDB_TOKEN", apikeyProperties['TMDB_TOKEN'])
+            buildConfigField("String", "TVDB_KEY", apikeyProperties['TVDB_KEY'])
+            buildConfigField("String", "FANART_KEY", apikeyProperties['FANART_KEY'])
+            manifestPlaceholders = [ applicationLabel: "@string/app_name"]
+        }
+        staging {
+            dimension "version"
+            buildConfigField("String", "TRAKT_CLIENT_ID", apikeyProperties['TRAKT_CLIENT_ID_DEV'])
+            buildConfigField("String", "TMDB_TOKEN", apikeyProperties['TMDB_TOKEN'])
+            buildConfigField("String", "TVDB_KEY", apikeyProperties['TVDB_KEY'])
+            buildConfigField("String", "FANART_KEY", apikeyProperties['FANART_KEY'])
+            applicationIdSuffix ".stage"
+            versionNameSuffix "-stage"
+            manifestPlaceholders = [ applicationLabel: "@string/app_name_dev"]
+        }
+    }
+
 }
 
 dependencies {
@@ -145,5 +167,10 @@ dependencies {
     implementation Libs.Coroutines.android
 
     implementation Libs.store
+
+    implementation Libs.Firebase.analytics
+    implementation Libs.Firebase.crashlytics
+    implementation Libs.Firebase.perf
+
 
 }
