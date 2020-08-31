@@ -17,8 +17,6 @@ object Libs {
 
     const val store = "com.dropbox.mobile.store:store4:4.0.0-alpha07"
 
-    const val jdkDeps = "com.github.pengrad:jdk9-deps:1.0"
-
     object Kotlin {
         private const val version = "1.4.0"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
