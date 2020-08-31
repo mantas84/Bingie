@@ -146,5 +146,4 @@ dependencies {
 
     implementation Libs.store
 
-//    compileOnly Libs.jdkDeps
 }
