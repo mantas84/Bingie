@@ -10,7 +10,10 @@ import java.util.Date
 
 class IdsConverter {
 
-    private val moshi = Moshi.Builder().add(Date::class.java, Rfc3339DateJsonAdapter()).add(KotlinJsonAdapterFactory()).build()
+    private val moshi = Moshi.Builder()
+        .add(Date::class.java, Rfc3339DateJsonAdapter())
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     private val adapter = moshi.adapter<Ids>(Ids::class.java)
 
