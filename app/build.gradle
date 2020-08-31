@@ -29,6 +29,15 @@ android {
     }
     compileSdkVersion 30
 
+    //temp fix for https://youtrack.jetbrains.com/issue/KT-32804 until 1.3.60 is released
+    kapt {
+        // we expect this closure to run over a org.jetbrains.kotlin.gradle.plugin.KaptExtension
+        javacOptions {
+            option("-source", "8")
+            option("-target", "8")
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -137,5 +146,5 @@ dependencies {
 
     implementation Libs.store
 
-    compileOnly Libs.jdkDeps
+//    compileOnly Libs.jdkDeps
 }

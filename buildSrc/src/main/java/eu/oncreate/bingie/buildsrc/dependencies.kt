@@ -7,7 +7,7 @@ object Versions {
 object Libs {
 
     const val androidGradlePlugin = "com.android.tools.build:gradle:4.0.1"
-    const val junit = "junit:junit:4.12"
+    const val junit = "junit:junit:4.13"
     const val material = "com.google.android.material:material:1.3.0-alpha01"
 
     const val timber = "com.jakewharton.timber:timber:4.7.1"
@@ -35,9 +35,9 @@ object Libs {
     }
 
     object AndroidX {
-        const val appcompat = "androidx.appcompat:appcompat:1.1.0"
-        const val coreKtx = "androidx.core:core-ktx:1.3.0"
-        const val constraint = "androidx.constraintlayout:constraintlayout:2.0.0-beta6"
+        const val appcompat = "androidx.appcompat:appcompat:1.2.0"
+        const val coreKtx = "androidx.core:core-ktx:1.3.1"
+        const val constraint = "androidx.constraintlayout:constraintlayout:2.0.1"
 
         const val legacy = "androidx.legacy:legacy-support-v4:1.0.0"
 
@@ -84,14 +84,14 @@ object Libs {
 //        }
 
         object Test {
-            const val unit = "androidx.test.ext:junit:1.1.1"
-            const val espresso = "androidx.test.espresso:espresso-core:3.2.0"
+            const val unit = "androidx.test.ext:junit:1.1.2"
+            const val espresso = "androidx.test.espresso:espresso-core:3.3.0"
         }
     }
 
     object Dagger {
         private const val version = "2.22.1"
-        private const val assistVersion = "0.4.0"
+        private const val assistVersion = "0.5.2"
 
         const val dagger = "com.google.dagger:dagger:$version"
         const val compiler = "com.google.dagger:dagger-compiler:$version"
@@ -106,7 +106,7 @@ object Libs {
 
     object Squareup {
         object Moshi {
-            private const val version = "1.8.0"
+            private const val version = "1.9.3"
             const val moshi = "com.squareup.moshi:moshi:$version"
             const val kotlin = "com.squareup.moshi:moshi-kotlin:$version"
             const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
@@ -114,8 +114,8 @@ object Libs {
         }
 
         object Retrofit {
-            private const val version = "2.8.1"
-            private const val loggingVersions = "4.2.1"
+            private const val version = "2.9.0"
+            private const val loggingVersions = "4.8.1"
             const val retrofit = "com.squareup.retrofit2:retrofit:$version"
             const val moshiConverter =
                 "com.squareup.retrofit2:converter-moshi:$version"
@@ -134,8 +134,8 @@ object Libs {
     }
 
     object Airbnb {
-        private const val epoxyVersion = "3.10.0"
-        const val mvrx = "com.airbnb.android:mvrx:1.3.0"
+        private const val epoxyVersion = "3.11.0"
+        const val mvrx = "com.airbnb.android:mvrx:1.5.1"
 
         const val epoxy = "com.airbnb.android:epoxy:$epoxyVersion"
         const val epoxyProcessor = "com.airbnb.android:epoxy-processor:$epoxyVersion"
