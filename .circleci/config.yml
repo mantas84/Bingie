@@ -21,7 +21,7 @@ jobs:
       - run: echo "keyAlias=$keyAlias" >> ~/code/keystore.properties
       - run: echo "keyPassword=$keyPassword" >> ~/code/keystore.properties
       - run: echo "storePassword=$storePassword" >> ~/code/keystore.properties
-      - run: echo "storeFile=~/code/android.jks" >> ~/code/keystore.properties
+      - run: echo "storeFile=/home/circleci/code/android.jks" >> ~/code/keystore.properties
       - run: echo $keystore | base64 --decode > android.jks
       - run: echo $firebaseProd | base64 --decode > app/src/prod/google-services.json
       - run: echo $firebaseProdDebug | base64 --decode > app/src/prod/debug/google-services.json
@@ -51,10 +51,103 @@ jobs:
       - slack/status:
             fail_only: true
             webhook: $SLACK_WEBHOOK
+  dev-build:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-30
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+        # Set Api Keys with environment variables
+      - run: echo "TRAKT_CLIENT_ID=$TRAKT_CLIENT_ID" >> ~/code/apikey.properties
+      - run: echo "TRAKT_CLIENT_SECRET=$TRAKT_CLIENT_SECRET" >> ~/code/apikey.properties
+      - run: echo "TRAKT_CLIENT_ID_DEV=$TRAKT_CLIENT_ID_DEV" >> ~/code/apikey.properties
+      - run: echo "TRAKT_CLIENT_SECRET_DEV=$TRAKT_CLIENT_SECRET_DEV" >> ~/code/apikey.properties
+      - run: echo "TMDB_TOKEN=$TMDB_TOKEN" >> ~/code/apikey.properties
+      - run: echo "TVDB_KEY=$TVDB_KEY" >> ~/code/apikey.properties
+      - run: echo "FANART_KEY=$FANART_KEY" >> ~/code/apikey.properties
+      - run: echo "keyAlias=$keyAlias" >> ~/code/keystore.properties
+      - run: echo "keyPassword=$keyPassword" >> ~/code/keystore.properties
+      - run: echo "storePassword=$storePassword" >> ~/code/keystore.properties
+      - run: echo "storeFile=/home/circleci/code/android.jks" >> ~/code/keystore.properties
+      - run: echo $keystore | base64 --decode > android.jks
+      - run: echo $firebaseProd | base64 --decode > app/src/prod/google-services.json
+      - run: echo $firebaseProdDebug | base64 --decode > app/src/prod/debug/google-services.json
+      - run: echo $firebaseDev | base64 --decode > app/src/staging/google-services.json
+      - run: echo $firebaseDevDebug | base64 --decode > app/src/staging/debug/google-services.json
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      #      - run:
+      #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+      #         command: sudo chmod +x ./gradlew
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Building APK
+          command: ./gradlew :app:assembleStaging
+      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+          path: app/build/outputs/apk/
+          destination: apks/
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+      - slack/status:
+            webhook: $SLACK_WEBHOOK
+
+  prod-build:
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-30
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      # Set Api Keys with environment variables
+      - run: echo "TRAKT_CLIENT_ID=$TRAKT_CLIENT_ID" >> ~/code/apikey.properties
+      - run: echo "TRAKT_CLIENT_SECRET=$TRAKT_CLIENT_SECRET" >> ~/code/apikey.properties
+      - run: echo "TRAKT_CLIENT_ID_DEV=$TRAKT_CLIENT_ID_DEV" >> ~/code/apikey.properties
+      - run: echo "TRAKT_CLIENT_SECRET_DEV=$TRAKT_CLIENT_SECRET_DEV" >> ~/code/apikey.properties
+      - run: echo "TMDB_TOKEN=$TMDB_TOKEN" >> ~/code/apikey.properties
+      - run: echo "TVDB_KEY=$TVDB_KEY" >> ~/code/apikey.properties
+      - run: echo "FANART_KEY=$FANART_KEY" >> ~/code/apikey.properties
+      - run: echo "keyAlias=$keyAlias" >> ~/code/keystore.properties
+      - run: echo "keyPassword=$keyPassword" >> ~/code/keystore.properties
+      - run: echo "storePassword=$storePassword" >> ~/code/keystore.properties
+      - run: echo "storeFile=/home/circleci/code/android.jks" >> ~/code/keystore.properties
+      - run: echo $keystore | base64 --decode > android.jks
+      - run: echo $firebaseProd | base64 --decode > app/src/prod/google-services.json
+      - run: echo $firebaseProdDebug | base64 --decode > app/src/prod/debug/google-services.json
+      - run: echo $firebaseDev | base64 --decode > app/src/staging/google-services.json
+      - run: echo $firebaseDevDebug | base64 --decode > app/src/staging/debug/google-services.json
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      #      - run:
+      #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
+      #         command: sudo chmod +x ./gradlew
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Building APK
+          command: ./gradlew :app:assembleProd
+      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+          path: app/build/outputs/apk/
+          destination: apks/
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+      - slack/status:
+          webhook: $SLACK_WEBHOOK
 
 workflows:
   version: 2
-  build-deploy:
+  build:
     jobs:
       - build:
           filters:
@@ -62,3 +155,17 @@ workflows:
               only:
                 - master
                 - dev
+
+  nightly-build-apks:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+                - dev
+    jobs:
+      - dev-build
+      - prod-build
+
