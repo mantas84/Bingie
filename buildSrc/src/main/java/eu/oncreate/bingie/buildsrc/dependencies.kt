@@ -7,6 +7,7 @@ object Versions {
 object Libs {
 
     const val androidGradlePlugin = "com.android.tools.build:gradle:4.0.1"
+    const val gmsGradle = "com.google.gms:google-services:4.3.3"
     const val junit = "junit:junit:4.13"
     const val material = "com.google.android.material:material:1.3.0-alpha01"
 
@@ -18,7 +19,7 @@ object Libs {
     const val store = "com.dropbox.mobile.store:store4:4.0.0-alpha07"
 
     object Kotlin {
-        private const val version = "1.4.0"
+        const val version = "1.4.0"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -146,6 +147,9 @@ object Libs {
     }
 
     object Firebase {
+        const val crashlyticsGradle="com.google.firebase:firebase-crashlytics-gradle:2.2.1"
+        const val perfGradle="com.google.firebase:perf-plugin:1.3.1"
+
         const val analytics = "com.google.firebase:firebase-analytics-ktx:17.5.0"
         const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx:17.2.1"
         const val perf = "com.google.firebase:firebase-perf:19.0.8"
