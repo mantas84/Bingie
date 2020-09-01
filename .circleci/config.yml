@@ -21,7 +21,7 @@ jobs:
       - run: echo "keyAlias=$keyAlias" >> ~/code/keystore.properties
       - run: echo "keyPassword=$keyPassword" >> ~/code/keystore.properties
       - run: echo "storePassword=$storePassword" >> ~/code/keystore.properties
-      - run: echo "storeFile=android.jks" >> ~/code/keystore.properties
+      - run: echo "storeFile=/home/circleci/code/android.jks" >> ~/code/keystore.properties
       - run: echo $keystore | base64 --decode > android.jks
       - run: echo $firebaseProd | base64 --decode > app/src/prod/google-services.json
       - run: echo $firebaseProdDebug | base64 --decode > app/src/prod/debug/google-services.json
