@@ -156,10 +156,10 @@ workflows:
                 - master
                 - dev
 
-  nightly-build-apks:
+  weekly-build-apks:
     triggers:
       - schedule:
-          cron: "0 0 * * *"
+          cron: "0 0 * * 5"
           filters:
             branches:
               only:
