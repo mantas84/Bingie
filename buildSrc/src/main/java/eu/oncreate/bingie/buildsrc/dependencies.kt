@@ -65,22 +65,22 @@ object Libs {
             const val compiler = "androidx.room:room-compiler:$version"
         }
 
-//        object Compose {
+        object Compose {
 //            const val snapshot = ""
-//            const val version = "1.0.0-alpha01"
-//
-//            const val core = "androidx.compose.ui:ui:$version"
-//            const val foundation = "androidx.compose.foundation:foundation:$version"
-//            const val layout = "androidx.compose.foundation:foundation-layout:$version"
-//            const val material = "androidx.compose.material:material:$version"
-//            const val materialIconsExtended =
-//                "androidx.compose.material:material-icons-extended:$version"
-//            const val runtime = "androidx.compose.runtime:runtime:$version"
-//            const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
-//            const val tooling = "androidx.ui:ui-tooling:$version"
-//            const val test = "androidx.compose.test:test-core:$version"
-//            const val uiTest = "androidx.ui:ui-test:$version"
-//        }
+            const val version = "1.0.0-alpha01"
+
+            const val core = "androidx.compose.ui:ui:$version"
+            const val foundation = "androidx.compose.foundation:foundation:$version"
+            const val layout = "androidx.compose.foundation:foundation-layout:$version"
+            const val material = "androidx.compose.material:material:$version"
+            const val materialIconsExtended =
+                "androidx.compose.material:material-icons-extended:$version"
+            const val runtime = "androidx.compose.runtime:runtime:$version"
+            const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
+            const val tooling = "androidx.ui:ui-tooling:$version"
+            const val test = "androidx.compose.test:test-core:$version"
+            const val uiTest = "androidx.ui:ui-test:$version"
+        }
 
         object Test {
             const val unit = "androidx.test.ext:junit:1.1.2"
