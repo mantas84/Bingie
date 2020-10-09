@@ -6,7 +6,7 @@ object Versions {
 
 object Libs {
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:4.0.1"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha13"
     const val gmsGradle = "com.google.gms:google-services:4.3.3"
     const val junit = "junit:junit:4.13"
     const val material = "com.google.android.material:material:1.3.0-alpha01"
@@ -19,7 +19,7 @@ object Libs {
     const val store = "com.dropbox.mobile.store:store4:4.0.0-alpha07"
 
     object Kotlin {
-        const val version = "1.4.0"
+        const val version = "1.4.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -67,9 +67,10 @@ object Libs {
 
         object Compose {
 //            const val snapshot = ""
-            const val version = "1.0.0-alpha01"
+            const val version = "1.0.0-alpha04"
 
             const val core = "androidx.compose.ui:ui:$version"
+            const val compiler = "androidx.compose.compiler:compiler:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
             const val layout = "androidx.compose.foundation:foundation-layout:$version"
             const val material = "androidx.compose.material:material:$version"

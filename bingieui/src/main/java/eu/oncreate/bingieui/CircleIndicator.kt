@@ -1,9 +1,9 @@
 package eu.oncreate.bingieui
 
-import androidx.compose.foundation.Box
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Stack
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -20,9 +20,9 @@ import androidx.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun CircleIndicator(percentage: Float = 93.3f, size: Int = 100) {
-    Stack() {
+    Box() {
         DrawCircles(percentage = percentage, size = size)
-        Box(modifier = Modifier.gravity(Alignment.Center)) {
+        Box(modifier = Modifier.align(Alignment.Center)) {
             Text(text = percentage.toString(), color = Color.White)
         }
     }
@@ -32,7 +32,7 @@ fun CircleIndicator(percentage: Float = 93.3f, size: Int = 100) {
 @Composable
 fun DrawCircles(percentage: Float = 75f, size: Int = 100) {
 
-    Box(backgroundColor = Color.Black, shape = CircleShape) {
+    Box(modifier = Modifier.background(Color.Black, CircleShape)) {
 
         val angle = 3.6f * percentage
         val arcSize = (size * 0.9f).dp

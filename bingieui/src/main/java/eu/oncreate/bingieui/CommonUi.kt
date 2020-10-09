@@ -1,6 +1,7 @@
 package eu.oncreate.bingieui
 
-import androidx.compose.foundation.Box
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.preferredSize
@@ -36,10 +37,7 @@ fun CircleShapeDemo() {
 @Composable
 fun ExampleBox(shape: Shape) {
     Column(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center)) {
-        Box(
-            modifier = Modifier.preferredSize(100.dp),
-            backgroundColor = Color.Red,
-            shape = shape
-        ) {}
+        Box(modifier = Modifier.preferredSize(100.dp).background(Color.Red, shape)) {
+        }
     }
 }
