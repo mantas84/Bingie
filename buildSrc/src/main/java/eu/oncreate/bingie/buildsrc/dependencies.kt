@@ -6,7 +6,7 @@ object Versions {
 
 object Libs {
 
-    const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha13"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha14"
     const val gmsGradle = "com.google.gms:google-services:4.3.3"
     const val junit = "junit:junit:4.13"
     const val material = "com.google.android.material:material:1.3.0-alpha01"
