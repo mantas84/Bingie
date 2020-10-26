@@ -19,7 +19,7 @@ data class SearchResultItem(
 ) {
 
     companion object {
-        fun toLocal(item: eu.oncreate.bingie.data.api.model.SearchResultItem): SearchResultItem {
+        fun toLocal(item: eu.oncreate.bingie.data.api.model.trakt.SearchResultItem): SearchResultItem {
             return SearchResultItem(
                 score = item.score,
                 show = Show.toLocal(item.show),
@@ -27,8 +27,8 @@ data class SearchResultItem(
             )
         }
 
-        fun toBe(searchResultItem: SearchResultItem): eu.oncreate.bingie.data.api.model.SearchResultItem {
-            return eu.oncreate.bingie.data.api.model.SearchResultItem(
+        fun toBe(searchResultItem: SearchResultItem): eu.oncreate.bingie.data.api.model.trakt.SearchResultItem {
+            return eu.oncreate.bingie.data.api.model.trakt.SearchResultItem(
                 score = searchResultItem.score,
                 show = Show.toBe(searchResultItem.show),
                 type = searchResultItem.type

@@ -4,17 +4,20 @@ import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
-// import com.dropbox.android.external.store4.nonFlowValueFetcher
+import eu.oncreate.bingie.data.PagedResponse
 import eu.oncreate.bingie.data.api.FanartApi
 import eu.oncreate.bingie.data.api.TmdbApi
 import eu.oncreate.bingie.data.api.TraktApi
-import eu.oncreate.bingie.data.api.model.SeasonsItem
 import eu.oncreate.bingie.data.api.model.fanart.FanartImages
 import eu.oncreate.bingie.data.api.model.tmdb.Configuration
 import eu.oncreate.bingie.data.api.model.tmdb.TmdbImages
+import eu.oncreate.bingie.data.api.model.trakt.SeasonsItem
 import eu.oncreate.bingie.data.local.RoomDb
 import eu.oncreate.bingie.data.local.model.mapping.getLocal
+import eu.oncreate.bingie.data.local.model.trakt.PopularShow.Companion.toSearchItem
+import eu.oncreate.bingie.data.local.model.trakt.PopularShow.Companion.toShow
 import eu.oncreate.bingie.data.local.model.trakt.SearchResultItem
+import eu.oncreate.bingie.utils.toPaged
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import timber.log.Timber
@@ -120,26 +123,66 @@ class Stores(
             )
             .build()
 
-    val search: Store<Pair<String, Int>, List<SearchResultItem>> =
+    val search: Store<Triple<String, Int, Int>, PagedResponse<List<SearchResultItem>>> =
 
         StoreBuilder
-            .from<Pair<String, Int>, List<eu.oncreate.bingie.data.api.model.SearchResultItem>, List<SearchResultItem>>(
-                fetcher = Fetcher.of { (query, page) -> traktApi.search(query) },
+            .from<
+                    Triple<String, Int, Int>,
+                    PagedResponse<List<eu.oncreate.bingie.data.api.model.trakt.SearchResultItem>>,
+                    PagedResponse<List<SearchResultItem>>>(
+                fetcher = Fetcher.of { (query, page, perPage) ->
+                    traktApi.search(
+                        query = query,
+                        page = page,
+                        limit = perPage.toString()
+                    ).toPaged()
+                },
                 sourceOfTruth = SourceOfTruth.of(
-                    nonFlowReader = { (query, _) ->
-                        if (query.isEmpty()) {
-                            roomDb.searchResultItemDao().searchSearchResultItem()
+                    nonFlowReader = { (query, page, perPage) ->
+                        val from = (page - 1) * perPage
+                        val to = (page) * perPage
+                        val items = if (query.isEmpty()) {
+                            roomDb.popularShowsDao()
+                                .searchPopularShow()
+                                .map { toSearchItem(it) }
                         } else {
-                            roomDb.searchResultItemDao().searchSearchResultItem(query)
+                            roomDb.searchResultItemDao()
+                                .searchSearchResultItem(query)
+                        }
+                        val content = items.subList(from, Math.min(items.size, to))
+                        PagedResponse(
+                            content = content,
+                            page = page,
+                            limit = perPage,
+                            totalPages = items.size.div(perPage) + 1,
+                            totalItems = items.size,
+                        )
+                    },
+                    writer = { (query, page, perPage), result ->
+                        val items = result.content
+                        if (items != null) {
+                            if (query.isEmpty()) {
+                                roomDb.popularShowsDao().deleteAllPopularShows()
+                                roomDb.popularShowsDao()
+                                    .insertAllPopularShow((items.map { toShow(getLocal(it)) }))
+                            }
+                            roomDb.searchResultItemDao()
+                                .insertAllSearchResultItem((items.map { getLocal(it) }))
+                        } else {
+                            // todo
+                            Timber.d("Error here ${result.error}")
                         }
                     },
-                    writer = { (_, _), items ->
-                        Timber.d("writer count ${items.size}")
-                        roomDb.searchResultItemDao()
-                            .insertAllSearchResultItem((items.map { getLocal(it) }))
-                    },
-                    delete = { (_, id) ->
-                        roomDb.searchResultItemDao().deleteSearchResultItem(id)
+                    delete = { (query, page, perPage) ->
+                        val from = (page - 1) * perPage
+                        val to = (page) * perPage
+                        val items = roomDb.searchResultItemDao()
+                            .searchSearchResultItem(query)
+                            .subList(from, to)
+                        items.forEach {
+                            roomDb.searchResultItemDao().deleteSearchResultItem(it.parentId)
+                        }
+//                        roomDb.searchResultItemDao().deleteSearchResultItem(id)
                     },
                     deleteAll = roomDb.searchResultItemDao()::deleteAllSearchResultItems
                 )
@@ -149,7 +192,7 @@ class Stores(
     val showStore: Store<Int, List<SearchResultItem>> =
 
         StoreBuilder
-            .from<Int, List<eu.oncreate.bingie.data.api.model.SearchResultItem>, List<SearchResultItem>>(
+            .from<Int, List<eu.oncreate.bingie.data.api.model.trakt.SearchResultItem>, List<SearchResultItem>>(
                 fetcher = Fetcher.of { traktId -> traktApi.searchLookUp(traktId) },
                 sourceOfTruth = SourceOfTruth.of(
                     nonFlowReader = { traktId ->

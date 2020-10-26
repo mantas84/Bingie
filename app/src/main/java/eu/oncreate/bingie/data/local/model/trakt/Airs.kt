@@ -16,12 +16,12 @@ data class Airs(
 ) {
 
     companion object {
-        fun toLocal(item: eu.oncreate.bingie.data.api.model.Airs, parentId: Int): Airs {
+        fun toLocal(item: eu.oncreate.bingie.data.api.model.trakt.Airs, parentId: Int): Airs {
             return Airs(parentId, item.day, item.time, item.timezone)
         }
 
-        fun toBe(airs: Airs): eu.oncreate.bingie.data.api.model.Airs {
-            return eu.oncreate.bingie.data.api.model.Airs(airs.day, airs.time, airs.timezone)
+        fun toBe(airs: Airs): eu.oncreate.bingie.data.api.model.trakt.Airs {
+            return eu.oncreate.bingie.data.api.model.trakt.Airs(airs.day, airs.time, airs.timezone)
         }
     }
 }

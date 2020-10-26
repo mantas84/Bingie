@@ -114,7 +114,7 @@ class NetModule {
     @Singleton
     @Named(Trakt)
     fun provideRetrofitTrakt(moshi: Moshi, @Named(Trakt) okHttpClient: OkHttpClient): Retrofit {
-        val baseUrl = if (BuildConfig.DEBUG) {
+        val baseUrl = if (BuildConfig.FLAVOR == "stagging") {
             "https://api-staging.trakt.tv"
         } else {
             "https://api.trakt.tv"

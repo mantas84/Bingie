@@ -36,7 +36,7 @@ data class SeasonsItem(
 ) {
 
     companion object {
-        fun toLocal(item: eu.oncreate.bingie.data.api.model.SeasonsItem, seriesTraktId: Int): SeasonsItem {
+        fun toLocal(item: eu.oncreate.bingie.data.api.model.trakt.SeasonsItem, seriesTraktId: Int): SeasonsItem {
             return SeasonsItem(
                 airedEpisodes = item.airedEpisodes,
                 episodeCount = item.episodeCount,
@@ -52,8 +52,8 @@ data class SeasonsItem(
             )
         }
 
-        fun toBe(seasonsItem: SeasonsItem): eu.oncreate.bingie.data.api.model.SeasonsItem {
-            return eu.oncreate.bingie.data.api.model.SeasonsItem(
+        fun toBe(seasonsItem: SeasonsItem): eu.oncreate.bingie.data.api.model.trakt.SeasonsItem {
+            return eu.oncreate.bingie.data.api.model.trakt.SeasonsItem(
                 airedEpisodes = seasonsItem.airedEpisodes,
                 episodeCount = seasonsItem.episodeCount,
                 firstAired = seasonsItem.firstAired,

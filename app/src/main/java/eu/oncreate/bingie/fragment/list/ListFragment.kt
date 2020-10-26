@@ -18,6 +18,7 @@ import eu.oncreate.bingie.R
 import eu.oncreate.bingie.fragment.base.BaseFragment
 import eu.oncreate.bingie.fragment.details.DetailsFragment
 import eu.oncreate.bingie.fragment.details.InitialDetailsState
+import eu.oncreate.bingie.utils.addOnEndReachListener
 import eu.oncreate.bingie.utils.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
@@ -48,6 +49,8 @@ class ListFragment : BaseFragment() {
         }
         searchList.layoutManager = LinearLayoutManager(requireContext())
         searchList.setController(controller)
+
+        searchList.addOnEndReachListener { viewModel.endReached() }
 
         postponeEnterTransition()
 

@@ -7,12 +7,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import eu.oncreate.bingie.data.local.dao.ConfigurationDao
 import eu.oncreate.bingie.data.local.dao.FanartImageDao
+import eu.oncreate.bingie.data.local.dao.PopularShowItemDao
 import eu.oncreate.bingie.data.local.dao.SearchResultItemDao
 import eu.oncreate.bingie.data.local.dao.SeasonsItemDao
 import eu.oncreate.bingie.data.local.dao.TmdbImagesDao
 import eu.oncreate.bingie.data.local.model.fanart.FanartImages
 import eu.oncreate.bingie.data.local.model.tmdb.Configuration
 import eu.oncreate.bingie.data.local.model.tmdb.TmdbImages
+import eu.oncreate.bingie.data.local.model.trakt.PopularShow
 import eu.oncreate.bingie.data.local.model.trakt.SearchResultItem
 import eu.oncreate.bingie.data.local.model.trakt.SeasonsItem
 import eu.oncreate.bingie.data.local.model.typeConverter.Converters
@@ -23,6 +25,7 @@ import eu.oncreate.bingie.data.local.model.typeConverter.Converters
         Configuration::class,
         TmdbImages::class,
         SearchResultItem::class,
+        PopularShow::class,
         SeasonsItem::class
     ],
     version = 1,
@@ -33,6 +36,7 @@ abstract class RoomDb : RoomDatabase() {
     abstract fun configurationDao(): ConfigurationDao
     abstract fun fanartImageDao(): FanartImageDao
     abstract fun searchResultItemDao(): SearchResultItemDao
+    abstract fun popularShowsDao(): PopularShowItemDao
     abstract fun seasonsItemDao(): SeasonsItemDao
     abstract fun tmdbImagesDao(): TmdbImagesDao
 
