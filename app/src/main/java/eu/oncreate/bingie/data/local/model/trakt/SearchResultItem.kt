@@ -4,18 +4,20 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.Instant
 
 @Entity
 data class SearchResultItem(
     @ColumnInfo(name = "score")
     val score: Double,
-//    @ColumnInfo(name = "show")
     @Embedded
     val show: Show,
     @ColumnInfo(name = "type")
     val type: String,
     @PrimaryKey
-    val parentId: Int = show.traktId
+    val parentId: Int = show.traktId,
+    @ColumnInfo(name = "updateTime")
+    val updateTime: Long
 ) {
 
     companion object {
@@ -23,7 +25,8 @@ data class SearchResultItem(
             return SearchResultItem(
                 score = item.score,
                 show = Show.toLocal(item.show),
-                type = item.type
+                type = item.type,
+                updateTime = Instant.now().epochSecond
             )
         }
 

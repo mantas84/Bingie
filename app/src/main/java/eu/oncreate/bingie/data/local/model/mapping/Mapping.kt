@@ -35,7 +35,8 @@ fun getLocal(item: SearchResultItem): LocalSearchResultItem {
         parentId = item.show.ids.trakt,
         score = item.score,
         show = Show.toLocal(item.show),
-        type = item.type
+        type = item.type,
+        updateTime = Instant.now().epochSecond
     )
 }
 

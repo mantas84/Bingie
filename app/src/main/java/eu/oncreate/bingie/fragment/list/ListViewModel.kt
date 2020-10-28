@@ -70,8 +70,11 @@ class ListViewModel @AssistedInject constructor(
         if (state.hasNext && state.searchResult !is Loading) {
             rxSingle() {
                 val searchResult =
-                    datasource.search(state.query, Constants.itemsPerPage, state.page)
-                swapContentInPage(datasource.getImages(searchResult.content.orEmpty()), searchResult)
+                    datasource.search(state.query, Constants.itemsPerPage, state.page + 1)
+                swapContentInPage(
+                    datasource.getImages(searchResult.content.orEmpty()),
+                    searchResult
+                )
             }.execute {
                 when (it) {
                     is Success -> {

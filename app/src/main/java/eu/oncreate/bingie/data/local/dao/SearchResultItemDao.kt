@@ -15,7 +15,7 @@ interface SearchResultItemDao {
     @Query("SELECT * FROM searchresultitem WHERE title LIKE '%' || :query || '%'")
     suspend fun searchSearchResultItem(query: String): List<SearchResultItem>
 
-    @Query("SELECT * FROM searchresultitem")
+    @Query("SELECT * FROM searchresultitem order by updateTime")
     suspend fun searchSearchResultItem(): List<SearchResultItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -11,12 +11,14 @@ import eu.oncreate.bingie.data.local.dao.PopularShowItemDao
 import eu.oncreate.bingie.data.local.dao.SearchResultItemDao
 import eu.oncreate.bingie.data.local.dao.SeasonsItemDao
 import eu.oncreate.bingie.data.local.dao.TmdbImagesDao
+import eu.oncreate.bingie.data.local.dao.TotalShowsDao
 import eu.oncreate.bingie.data.local.model.fanart.FanartImages
 import eu.oncreate.bingie.data.local.model.tmdb.Configuration
 import eu.oncreate.bingie.data.local.model.tmdb.TmdbImages
 import eu.oncreate.bingie.data.local.model.trakt.PopularShow
 import eu.oncreate.bingie.data.local.model.trakt.SearchResultItem
 import eu.oncreate.bingie.data.local.model.trakt.SeasonsItem
+import eu.oncreate.bingie.data.local.model.trakt.TotalShows
 import eu.oncreate.bingie.data.local.model.typeConverter.Converters
 
 @Database(
@@ -26,6 +28,7 @@ import eu.oncreate.bingie.data.local.model.typeConverter.Converters
         TmdbImages::class,
         SearchResultItem::class,
         PopularShow::class,
+        TotalShows::class,
         SeasonsItem::class
     ],
     version = 1,
@@ -38,6 +41,7 @@ abstract class RoomDb : RoomDatabase() {
     abstract fun searchResultItemDao(): SearchResultItemDao
     abstract fun popularShowsDao(): PopularShowItemDao
     abstract fun seasonsItemDao(): SeasonsItemDao
+    abstract fun totalShowsDao(): TotalShowsDao
     abstract fun tmdbImagesDao(): TmdbImagesDao
 
     companion object {

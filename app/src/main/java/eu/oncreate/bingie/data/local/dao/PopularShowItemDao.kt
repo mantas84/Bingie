@@ -15,7 +15,7 @@ interface PopularShowItemDao {
     @Query("SELECT * FROM popularshow WHERE title LIKE '%' || :query || '%'")
     suspend fun searchPopularShow(query: String): List<PopularShow>
 
-    @Query("SELECT * FROM popularshow")
+    @Query("SELECT * FROM popularshow order by updateTime")
     suspend fun searchPopularShow(): List<PopularShow>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -45,7 +45,11 @@ class StoreSource @Inject constructor(
         limit: Int,
         page: Int
     ): PagedResponse<List<eu.oncreate.bingie.data.local.model.trakt.SearchResultItem>> {
-        return stores.search.fresh(Triple(query, page, limit))
+        return if (query.isEmpty()) {
+            stores.popularShows.fresh(Pair(page, limit))
+        } else {
+            stores.search.fresh(Triple(query, page, limit))
+        }
     }
 
     suspend fun getImages(

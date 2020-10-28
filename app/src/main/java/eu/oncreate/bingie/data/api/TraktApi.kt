@@ -1,5 +1,6 @@
 package eu.oncreate.bingie.data.api
 
+import eu.oncreate.bingie.data.api.model.trakt.PopularShow
 import eu.oncreate.bingie.data.api.model.trakt.SearchResultItem
 import eu.oncreate.bingie.data.api.model.trakt.Seasons
 import eu.oncreate.bingie.data.api.model.trakt.SeasonsItem
@@ -16,6 +17,13 @@ interface TraktApi {
         @Query("limit") limit: String = "25",
         @Query("page") page: Int = 1,
     ): Response<List<SearchResultItem>>
+
+    @GET("/search/show?extended=full&fields=title")
+    suspend fun getPopular(
+        @Query("query") query: String = "",
+        @Query("limit") limit: String = "25",
+        @Query("page") page: Int = 1,
+    ): Response<List<PopularShow>>
 
     @GET("/search/trakt/{id}?type=show&extended=full&fields=title")
     suspend fun searchLookUp(@Path("id") traktId: Int): List<SearchResultItem>

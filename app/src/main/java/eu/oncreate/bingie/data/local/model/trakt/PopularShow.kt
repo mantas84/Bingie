@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.Instant
 
 @Entity
 data class PopularShow(
@@ -14,14 +15,17 @@ data class PopularShow(
     @ColumnInfo(name = "type")
     val type: String,
     @PrimaryKey
-    val parentId: Int = show.traktId
+    val parentId: Int = show.traktId,
+    @ColumnInfo(name = "updateTime")
+    val updateTime: Long
 ) {
     companion object {
         fun toLocal(item: eu.oncreate.bingie.data.api.model.trakt.PopularShow): PopularShow {
             return PopularShow(
                 score = item.score,
                 show = Show.toLocal(item.show),
-                type = item.type
+                type = item.type,
+                updateTime = Instant.now().epochSecond
             )
         }
 
@@ -37,7 +41,8 @@ data class PopularShow(
             return SearchResultItem(
                 score = popularShow.score,
                 show = popularShow.show,
-                type = popularShow.type
+                type = popularShow.type,
+                updateTime = popularShow.updateTime
             )
         }
 
@@ -45,7 +50,8 @@ data class PopularShow(
             return PopularShow(
                 score = searchResultItem.score,
                 show = searchResultItem.show,
-                type = searchResultItem.type
+                type = searchResultItem.type,
+                updateTime = searchResultItem.updateTime
             )
         }
     }

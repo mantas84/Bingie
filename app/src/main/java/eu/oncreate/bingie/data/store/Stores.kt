@@ -14,9 +14,10 @@ import eu.oncreate.bingie.data.api.model.tmdb.TmdbImages
 import eu.oncreate.bingie.data.api.model.trakt.SeasonsItem
 import eu.oncreate.bingie.data.local.RoomDb
 import eu.oncreate.bingie.data.local.model.mapping.getLocal
+import eu.oncreate.bingie.data.local.model.trakt.PopularShow.Companion.toLocal
 import eu.oncreate.bingie.data.local.model.trakt.PopularShow.Companion.toSearchItem
-import eu.oncreate.bingie.data.local.model.trakt.PopularShow.Companion.toShow
 import eu.oncreate.bingie.data.local.model.trakt.SearchResultItem
+import eu.oncreate.bingie.data.local.model.trakt.TotalShows
 import eu.oncreate.bingie.utils.toPaged
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -141,31 +142,21 @@ class Stores(
                     nonFlowReader = { (query, page, perPage) ->
                         val from = (page - 1) * perPage
                         val to = (page) * perPage
-                        val items = if (query.isEmpty()) {
-                            roomDb.popularShowsDao()
-                                .searchPopularShow()
-                                .map { toSearchItem(it) }
-                        } else {
-                            roomDb.searchResultItemDao()
-                                .searchSearchResultItem(query)
-                        }
+                        val items = roomDb.searchResultItemDao()
+                            .searchSearchResultItem(query)
+
                         val content = items.subList(from, Math.min(items.size, to))
                         PagedResponse(
                             content = content,
                             page = page,
                             limit = perPage,
-                            totalPages = items.size.div(perPage) + 1,
+                            totalPages = items.size.minus(1).div(perPage) + 1,
                             totalItems = items.size,
                         )
                     },
                     writer = { (query, page, perPage), result ->
                         val items = result.content
                         if (items != null) {
-                            if (query.isEmpty()) {
-                                roomDb.popularShowsDao().deleteAllPopularShows()
-                                roomDb.popularShowsDao()
-                                    .insertAllPopularShow((items.map { toShow(getLocal(it)) }))
-                            }
                             roomDb.searchResultItemDao()
                                 .insertAllSearchResultItem((items.map { getLocal(it) }))
                         } else {
@@ -182,27 +173,99 @@ class Stores(
                         items.forEach {
                             roomDb.searchResultItemDao().deleteSearchResultItem(it.parentId)
                         }
-//                        roomDb.searchResultItemDao().deleteSearchResultItem(id)
                     },
                     deleteAll = roomDb.searchResultItemDao()::deleteAllSearchResultItems
                 )
             )
             .build()
 
+    val popularShows: Store<Pair<Int, Int>, PagedResponse<List<SearchResultItem>>> =
+        StoreBuilder
+            .from<
+                    Pair<Int, Int>,
+                    PagedResponse<List<eu.oncreate.bingie.data.api.model.trakt.PopularShow>>,
+                    PagedResponse<List<SearchResultItem>>>(
+                fetcher = Fetcher.of { (page, perPage) ->
+                    traktApi.getPopular(
+                        page = page,
+                        limit = perPage.toString()
+                    ).toPaged()
+                },
+                sourceOfTruth = SourceOfTruth.of(
+                    nonFlowReader = { (page, perPage) ->
+                        val from = (page - 1) * perPage
+                        val to = (page) * perPage
+                        val items = roomDb.popularShowsDao()
+                            .searchPopularShow()
+                        val content = items
+                            .subList(from, Math.min(items.size, to))
+                            .map { toSearchItem(it) }
+                        val totalItems = roomDb
+                            .totalShowsDao()
+                            .getAll()
+                            .lastOrNull()
+                            ?.totalShows ?: 10000
+                        val totalPages = totalItems.div(perPage)
+                        Timber.d("&page= total pages = $totalPages, size ${items.size}")
+                        PagedResponse(
+                            content = content,
+                            page = page,
+                            limit = perPage,
+                            totalPages = totalPages,
+                            totalItems = totalItems,
+                        )
+                    },
+                    writer = { (page, perPage), result ->
+                        val items = result.content
+                        if (items != null) {
+                            if (page == 1) {
+                                roomDb.popularShowsDao().deleteAllPopularShows()
+                                roomDb.totalShowsDao().deleteAll()
+                                roomDb.totalShowsDao()
+                                    .insert(TotalShows(totalShows = result.totalItems ?: 0))
+                            }
+                            roomDb.popularShowsDao()
+                                .insertAllPopularShow(items.map { toLocal(it) })
+
+                            roomDb.searchResultItemDao()
+                                .insertAllSearchResultItem((items.map { toSearchItem(toLocal(it)) }))
+                        } else {
+                            // todo
+                            Timber.d("Error here ${result.error}")
+                        }
+                    },
+                    delete = { (page, perPage) ->
+                        val from = (page - 1) * perPage
+                        val to = (page) * perPage
+                        val items = roomDb.popularShowsDao()
+                            .searchPopularShow()
+                            .subList(from, to)
+                        items.forEach {
+                            roomDb.searchResultItemDao().deleteSearchResultItem(it.parentId)
+                        }
+                    },
+                    deleteAll = roomDb.popularShowsDao()::deleteAllPopularShows
+                )
+            ).build()
+
     val showStore: Store<Int, List<SearchResultItem>> =
 
         StoreBuilder
             .from<Int, List<eu.oncreate.bingie.data.api.model.trakt.SearchResultItem>, List<SearchResultItem>>(
-                fetcher = Fetcher.of { traktId -> traktApi.searchLookUp(traktId) },
+                fetcher = Fetcher.of
+                { traktId -> traktApi.searchLookUp(traktId) },
                 sourceOfTruth = SourceOfTruth.of(
-                    nonFlowReader = { traktId ->
+                    nonFlowReader =
+                    { traktId ->
                         roomDb.searchResultItemDao().getSearchResultItem(traktId)
                     },
-                    writer = { traktId, items ->
+                    writer =
+                    { traktId, items ->
                         roomDb.searchResultItemDao()
                             .insertAllSearchResultItem((items.map { getLocal(it) }))
                     },
-                    delete = { traktId ->
+                    delete =
+                    { traktId ->
                         roomDb.searchResultItemDao().deleteSearchResultItem(traktId)
                     },
                     deleteAll = roomDb.searchResultItemDao()::deleteAllSearchResultItems
