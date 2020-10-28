@@ -2,6 +2,7 @@ package eu.oncreate.bingie.data.store
 
 import com.dropbox.android.external.store4.fresh
 import com.dropbox.android.external.store4.get
+import eu.oncreate.bingie.data.PagedResponse
 import eu.oncreate.bingie.data.api.FanartApi
 import eu.oncreate.bingie.data.api.TmdbApi
 import eu.oncreate.bingie.data.api.TraktApi
@@ -39,9 +40,16 @@ class StoreSource @Inject constructor(
         }
     }
 
-    suspend fun search(query: String): List<LocalSearchResult> {
-        return stores.search.fresh(Pair(query, 1))
-//        return searchStore.get(Pair(query, 1))
+    suspend fun search(
+        query: String,
+        limit: Int,
+        page: Int
+    ): PagedResponse<List<eu.oncreate.bingie.data.local.model.trakt.SearchResultItem>> {
+        return if (query.isEmpty()) {
+            stores.popularShows.fresh(Pair(page, limit))
+        } else {
+            stores.search.fresh(Triple(query, page, limit))
+        }
     }
 
     suspend fun getImages(

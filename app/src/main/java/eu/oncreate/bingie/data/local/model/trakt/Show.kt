@@ -57,7 +57,7 @@ data class Show(
 ) {
 
     companion object {
-        fun toLocal(item: eu.oncreate.bingie.data.api.model.Show): Show {
+        fun toLocal(item: eu.oncreate.bingie.data.api.model.trakt.Show): Show {
             return Show(
                 item.airedEpisodes,
                 Airs.toLocal(item.airs, item.ids.trakt),
@@ -84,8 +84,8 @@ data class Show(
             )
         }
 
-        fun toBe(show: Show): eu.oncreate.bingie.data.api.model.Show {
-            return eu.oncreate.bingie.data.api.model.Show(
+        fun toBe(show: Show): eu.oncreate.bingie.data.api.model.trakt.Show {
+            return eu.oncreate.bingie.data.api.model.trakt.Show(
                 show.airedEpisodes,
                 Airs.toBe(show.airs),
                 show.availableTranslations,

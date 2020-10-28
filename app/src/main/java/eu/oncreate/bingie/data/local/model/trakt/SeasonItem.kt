@@ -39,7 +39,7 @@ data class SeasonItem(
 ) {
 
     companion object {
-        fun toLocal(item: eu.oncreate.bingie.data.api.model.SeasonItem): SeasonItem {
+        fun toLocal(item: eu.oncreate.bingie.data.api.model.trakt.SeasonItem): SeasonItem {
             return SeasonItem(
                 availableTranslations = item.availableTranslations,
                 commentCount = item.commentCount,
@@ -58,8 +58,8 @@ data class SeasonItem(
             )
         }
 
-        fun toBe(seasonItem: SeasonItem): eu.oncreate.bingie.data.api.model.SeasonItem {
-            return eu.oncreate.bingie.data.api.model.SeasonItem(
+        fun toBe(seasonItem: SeasonItem): eu.oncreate.bingie.data.api.model.trakt.SeasonItem {
+            return eu.oncreate.bingie.data.api.model.trakt.SeasonItem(
                 availableTranslations = seasonItem.availableTranslations,
                 commentCount = seasonItem.commentCount,
                 firstAired = seasonItem.firstAired,

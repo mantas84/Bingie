@@ -39,7 +39,7 @@ class LocalSource @Inject constructor(private val roomDb: RoomDb) {
         return roomDb.seasonsItemDao().getSeasonsItem(traktId)
     }
 
-    suspend fun insertSeasons(seasons: List<eu.oncreate.bingie.data.api.model.SeasonsItem>, traktId: Int) {
+    suspend fun insertSeasons(seasons: List<eu.oncreate.bingie.data.api.model.trakt.SeasonsItem>, traktId: Int) {
         return roomDb.seasonsItemDao()
             .insertAllSeasonsItems(seasons.map { getLocal(it, traktId) })
     }
@@ -50,7 +50,7 @@ class LocalSource @Inject constructor(private val roomDb: RoomDb) {
             .getSearchResultItem(traktId)
     }
 
-    suspend fun insertShow(searchResults: List<eu.oncreate.bingie.data.api.model.SearchResultItem>) {
+    suspend fun insertShow(searchResults: List<eu.oncreate.bingie.data.api.model.trakt.SearchResultItem>) {
         return roomDb
             .searchResultItemDao()
             .insertAllSearchResultItem(searchResults.map { SearchResultItem.toLocal(it) })

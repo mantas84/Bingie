@@ -1,4 +1,4 @@
-package eu.oncreate.bingie.data.api.model
+package eu.oncreate.bingie.data.api.model.trakt
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

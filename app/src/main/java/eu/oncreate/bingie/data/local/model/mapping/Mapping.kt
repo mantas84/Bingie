@@ -1,7 +1,7 @@
 package eu.oncreate.bingie.data.local.model.mapping
 
-import eu.oncreate.bingie.data.api.model.SearchResultItem
-import eu.oncreate.bingie.data.api.model.SeasonsItem
+import eu.oncreate.bingie.data.api.model.trakt.SearchResultItem
+import eu.oncreate.bingie.data.api.model.trakt.SeasonsItem
 import eu.oncreate.bingie.data.api.model.tmdb.Configuration
 import eu.oncreate.bingie.data.api.model.tmdb.TmdbImages
 import eu.oncreate.bingie.data.local.model.tmdb.Backdrop
@@ -35,7 +35,8 @@ fun getLocal(item: SearchResultItem): LocalSearchResultItem {
         parentId = item.show.ids.trakt,
         score = item.score,
         show = Show.toLocal(item.show),
-        type = item.type
+        type = item.type,
+        updateTime = Instant.now().epochSecond
     )
 }
 

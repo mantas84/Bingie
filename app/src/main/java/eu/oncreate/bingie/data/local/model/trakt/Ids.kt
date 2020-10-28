@@ -20,12 +20,12 @@ data class Ids(
 ) {
 
     companion object {
-        fun toLocal(item: eu.oncreate.bingie.data.api.model.Ids): Ids {
+        fun toLocal(item: eu.oncreate.bingie.data.api.model.trakt.Ids): Ids {
             return Ids(item.imdb, item.slug, item.tmdb, item.trakt, item.tvdb, item.tvrage)
         }
 
-        fun toBe(ids: Ids): eu.oncreate.bingie.data.api.model.Ids {
-            return eu.oncreate.bingie.data.api.model.Ids(
+        fun toBe(ids: Ids): eu.oncreate.bingie.data.api.model.trakt.Ids {
+            return eu.oncreate.bingie.data.api.model.trakt.Ids(
                 ids.imdb,
                 ids.slug,
                 ids.tmdb,
