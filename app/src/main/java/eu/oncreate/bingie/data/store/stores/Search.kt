@@ -53,7 +53,7 @@ class Search(private val roomDb: RoomDb, private val traktApi: TraktApi) {
                             totalItems = items.size,
                         )
                     },
-                    writer = { (query, page, perPage), result ->
+                    writer = { (_, _, _), result ->
                         val items = result.content
                         if (items != null) {
                             roomDb.searchResultItemDao()

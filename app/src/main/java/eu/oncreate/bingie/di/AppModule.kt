@@ -10,6 +10,7 @@ import eu.oncreate.bingie.data.api.FanartApi
 import eu.oncreate.bingie.data.api.TmdbApi
 import eu.oncreate.bingie.data.api.TraktApi
 import eu.oncreate.bingie.data.local.RoomDb
+import eu.oncreate.bingie.utils.NetworkStatusManager
 import javax.inject.Singleton
 
 // @Module(includes = [ViewModelModule::class])
@@ -36,11 +37,13 @@ class AppModule {
         room: RoomDb,
         traktApi: TraktApi,
         fanartApi: FanartApi,
-        tmdbApi: TmdbApi
+        tmdbApi: TmdbApi,
+        networkStatusManager: NetworkStatusManager
     ) = StoreSource(
         room,
         fanartApi,
         tmdbApi,
-        traktApi
+        traktApi,
+        networkStatusManager
     )
 }

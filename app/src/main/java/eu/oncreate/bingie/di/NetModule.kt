@@ -1,6 +1,7 @@
 package eu.oncreate.bingie.di
 
 import android.app.Application
+import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -10,6 +11,7 @@ import eu.oncreate.bingie.BuildConfig
 import eu.oncreate.bingie.data.api.FanartApi
 import eu.oncreate.bingie.data.api.TmdbApi
 import eu.oncreate.bingie.data.api.TraktApi
+import eu.oncreate.bingie.utils.NetworkStatusManager
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -30,7 +32,7 @@ class NetModule {
     @Provides
     @Singleton
     fun provideHttpCache(application: Application): Cache {
-        val cacheSize = 10L * 1024 * 1024
+        val cacheSize = 50L * 1024 * 1024
         return Cache(application.cacheDir, cacheSize)
     }
 
@@ -166,6 +168,12 @@ class NetModule {
     @Singleton
     fun provideFanartApi(@Named(Fanart) retrofit: Retrofit): FanartApi {
         return retrofit.create(FanartApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkStatusManager(appContext: Context): NetworkStatusManager {
+        return NetworkStatusManager(appContext)
     }
 
     companion object {
