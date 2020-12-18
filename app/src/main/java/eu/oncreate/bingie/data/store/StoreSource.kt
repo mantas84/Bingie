@@ -9,6 +9,8 @@ import eu.oncreate.bingie.data.api.TraktApi
 import eu.oncreate.bingie.data.local.RoomDb
 import eu.oncreate.bingie.data.local.model.tmdb.Images
 import eu.oncreate.bingie.fragment.list.ShowWithImages
+import eu.oncreate.bingie.utils.NetworkStatusManager
+import eu.oncreate.bingie.utils.toPaged
 import kotlinx.coroutines.runBlocking
 import java.time.Instant
 import javax.inject.Inject
@@ -20,7 +22,8 @@ class StoreSource @Inject constructor(
     roomDb: RoomDb,
     fanartApi: FanartApi,
     tmdbApi: TmdbApi,
-    traktApi: TraktApi
+    val traktApi: TraktApi,
+    val networkStatusManager: NetworkStatusManager
 ) {
 
     private val stores = Stores(roomDb, fanartApi, tmdbApi, traktApi)
@@ -48,7 +51,27 @@ class StoreSource @Inject constructor(
         return if (query.isEmpty()) {
             stores.popularShows.fresh(Pair(page, limit))
         } else {
-            stores.search.fresh(Triple(query, page, limit))
+            if (networkStatusManager.isOnline()) {
+                val remote = traktApi.search(
+                    query = query,
+                    page = page,
+                    limit = limit.toString()
+                ).toPaged()
+//                todo ugly
+                val content = remote.content?.map {
+                    eu.oncreate.bingie.data.local.model.trakt.SearchResultItem.toLocal(it)
+                }
+                stores.search.fresh(Triple(query, page, limit))
+                PagedResponse(
+                    content = content,
+                    page = remote.page,
+                    limit = remote.limit,
+                    totalPages = remote.totalPages,
+                    totalItems = remote.totalItems
+                )
+            } else {
+                stores.search.fresh(Triple(query, page, limit))
+            }
         }
     }
 

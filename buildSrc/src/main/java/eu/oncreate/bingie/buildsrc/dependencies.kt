@@ -26,7 +26,7 @@ object Libs {
     }
 
     object Coroutines {
-        private const val version = "1.3.9"
+        private const val version = "1.4.0"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
         const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val rx2 = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:$version"
@@ -123,6 +123,9 @@ object Libs {
             const val logging =
                 "com.squareup.okhttp3:logging-interceptor:$loggingVersions"
         }
+
+        private const val canaryVersion = "2.5"
+        const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${canaryVersion}"
 
     }
 
